@@ -1,5 +1,6 @@
 #!/bin/bash
 # Uses "stuff" to inject strings into the input buffer of a running window.
+# Assign to a crontab, to run no more than once a day! (file naming reasons)
 # Says a warning in-game, saves worlds, stops server & compresses backup.
 
 screen -p 0 -X stuff "say Treescape restarting in 2 mins!$(printf \\r)"
