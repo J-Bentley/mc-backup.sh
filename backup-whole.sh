@@ -8,6 +8,7 @@ backupLocation=$("/home/jordan/BACKUP/")
 serverName=$("Treescape")
 startScript=$("bash start.sh")
 
+# Used to create a unique identifier for the file-name. Change if creating backup more than once a day!
 current_day=$(date +"%m_%d_%Y")
 
 # In-game warnings, wait 2 mins, stop and echo to screen. Waits between saving, stopping and compressing for HDDs?
