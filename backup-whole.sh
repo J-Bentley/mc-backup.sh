@@ -1,6 +1,6 @@
 #!/bin/bash
 # Use crontab to auto schedule
-# Uses stuff to inject strings into the input buffer of a running window
+# Uses stuff to inject strings into the input buffer of a running window, assumes only running screen session
 
 # Variables - Change to your needs
 fileToBackup=$("/home/jordan/treescape")
