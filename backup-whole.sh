@@ -1,6 +1,5 @@
 #!/bin/bash
 # Uses "stuff" to inject strings into the input buffer of a running window.
-# Assign to a crontab, to run no more than once a day! (file naming reasons)
 # Says a warning in-game, saves worlds, stops server & compresses backup.
 
 screen -p 0 -X stuff "say Treescape restarting in 2 mins!$(printf \\r)"
@@ -13,7 +12,7 @@ screen -p 0 -X stuff "stop$(printf \\r)"
 sleep 10
 
 current_day=$(date +"%m_%d_%Y")
-tar -czPf treescape-$current_day.tar.gz /home/jordan/treescape/
+tar -czPf /home/jordan/BACKUP/treescape-$current_day.tar.gz /home/jordan/treescape/
 # Compress /treescape/ & save it to working directory [?] (Make it save to /backup/)
 
 screen -p 0 -X stuff "bash start.sh$(printf \\r)"
