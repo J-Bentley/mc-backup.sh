@@ -13,7 +13,6 @@ startScript="bash start.sh"
 current_day=$(date +"%m_%d_%Y")
 
 # In-game warnings, wait 2 mins, stop and echo to screen. Waits between saving, stopping and compressing for HDDs
-echo "Issuing warnings..."
 screen -p 0 -X stuff "say $serverName is restarting in 2 mins!$(printf \\r)"
 sleep 1m
 screen -p 0 -X stuff "say $serverName is restarting in 1 min!!$(printf \\r)"
@@ -25,9 +24,7 @@ screen -p 0 -X stuff "stop$(printf \\r)"
 sleep 5
 screen -p 0 -X stuff "echo Worlds saved and $serverName stopped. Compressing backup...$(printf \\r)"| tr a-z A-Z
 
-echo "Starting compression of $fileToBackup to $backupLocation..."| tr a-z A-Z
 tar -czPf $backupLocation$serverName-$current_day.tar.gz $fileToBackup
-echo "Backup created on $current_day!"| tr a-z A-Z
 
 screen -p 0 -X stuff "echo backup complete! restarting $serverName...$(printf \\r)"| tr a-z A-Z
 screen -p 0 -X stuff "$startScript $(printf \\r)"
