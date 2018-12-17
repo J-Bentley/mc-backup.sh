@@ -22,9 +22,9 @@ screen -p 0 -X stuff "save-all$(printf \\r)"
 sleep 5
 screen -p 0 -X stuff "stop$(printf \\r)"
 sleep 5
-screen -p 0 -X stuff "echo Worlds saved and $serverName stopped. Compressing backup...$(printf \\r)"| tr a-z A-Z
+screen -p 0 -X stuff "echo Worlds saved and $serverName stopped. Compressing backup...$(printf \\r)"
 
 tar -czPf $backupLocation$serverName-$current_day.tar.gz $fileToBackup
 
-screen -p 0 -X stuff "echo backup complete! restarting $serverName...$(printf \\r)"| tr a-z A-Z
+screen -p 0 -X stuff "echo Backup complete! Restarting $serverName... $(printf \\r)"
 screen -p 0 -X stuff "$startScript $(printf \\r)"
