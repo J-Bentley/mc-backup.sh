@@ -1,18 +1,19 @@
 #!/bin/bash
 # Jordan Bentley 2018-12-15
 # A Minecraft server backup/compression script that gracefully stops the server, with in-game warnings to players.
-# Uses stuff to inject strings into the input buffer of a running window, assumes only 1 running screen session though!
+# Uses stuff to inject strings into the input buffer of a running window, assumes only 1 running screen session(!)
+# Uses GDRIVE to upload compressed folder to google drive folder specified.
 
-# Variables - Change to your needs
+# Variables - Change to your needs!
 fileToBackup="/home/jordan/treescape"
 backupLocation="/home/jordan/BACKUP/"
+gdriveFolderID="gdrive list and paste here"
 serverName="Treescape"
 startScript="bash start.sh"
 
-# Used to create a unique identifier for the file-name. Change if creating backup more than once a day!
-current_day=$(date +"%m_%d_%Y")
+# A unique identifier for the file-name. Change if creating backup more than once a day!
+currentDay=$(date +"%m_%d_%Y")
 
-# In-game warnings, wait 2 mins, stop and echo to screen. Waits between saving, stopping and compressing for HDDs
 screen -p 0 -X stuff "say $serverName is restarting in 2 mins!$(printf \\r)"
 sleep 1m
 screen -p 0 -X stuff "say $serverName is restarting in 1 min!!$(printf \\r)"
@@ -24,7 +25,11 @@ screen -p 0 -X stuff "stop$(printf \\r)"
 sleep 5
 screen -p 0 -X stuff "echo Worlds saved and $serverName stopped. Compressing backup...$(printf \\r)"
 
-tar -czPf $backupLocation$serverName-$current_day.tar.gz $fileToBackup
+tar -czPf $backupLocation$serverName-$currentDay.tar.gz $fileToBackup
 
-screen -p 0 -X stuff "echo Backup complete! Restarting $serverName... $(printf \\r)"
+screen -p 0 -X stuff "echo Compression complete. Uploading to gdrive...$(printf \\r)"
+
+gdrive upload -p $gdriveFolderID $backupLocation$serverName-$currentDay.tar.gz
+
+screen -p 0 -X stuff "echo Upload complete! Restarting $serverName... $(printf \\r)"
 screen -p 0 -X stuff "$startScript $(printf \\r)"
