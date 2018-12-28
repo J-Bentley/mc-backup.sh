@@ -7,7 +7,7 @@
 # Variables - Change to your needs!
 fileToBackup="/home/jordan/treescape"
 backupLocation="/home/jordan/BACKUP/"
-gdriveFolderID="gdrive list and paste here"
+gdriveFolderID="1GkyWWtwF2dbKFo29E1GC9y1VVhj_UuFG" # "gdrive list" to get folderID's
 serverName="Treescape"
 startScript="bash start.sh"
 
@@ -23,13 +23,15 @@ screen -p 0 -X stuff "save-all$(printf \\r)"
 sleep 5
 screen -p 0 -X stuff "stop$(printf \\r)"
 sleep 5
-screen -p 0 -X stuff "echo Worlds saved and $serverName stopped. Compressing backup...$(printf \\r)"
+screen -p 0 -X stuff "echo Worlds saved and $serverName stopped. $(printf \\r)"
 
+screen -p 0 -X stuff "echo Compressing backup on $currentDay...$(printf \\r)"
 tar -czPf $backupLocation$serverName-$currentDay.tar.gz $fileToBackup
+screen -p 0 -X stuff "echo Compression complete!
 
-screen -p 0 -X stuff "echo Compression complete. Uploading to gdrive...$(printf \\r)"
+# screen -p 0 -X stuff "echo Uploading compressed backup to Gdrive on $currentDay... $(printf \\r)"
+# gdrive upload -p $gdriveFolderID $backupLocation$serverName-$currentDay.tar.gz
+# screen -p 0 -X stuff "echo Upload complete! $(printf \\r)"
 
-gdrive upload -p $gdriveFolderID $backupLocation$serverName-$currentDay.tar.gz
-
-screen -p 0 -X stuff "echo Upload complete! Restarting $serverName... $(printf \\r)"
+screen -p 0 -X stuff "echo Restarting $serverName... $(printf \\r)"
 screen -p 0 -X stuff "$startScript $(printf \\r)"
