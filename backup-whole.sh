@@ -32,7 +32,7 @@ screen -p 0 -X stuff "say $serverName is restarting now!$(printf \\r)"
 screen -p 0 -X stuff "save-all$(printf \\r)"
 sleep 5
 screen -p 0 -X stuff "stop$(printf \\r)"
-sleep 5
+sleep 5 # waits for hdds, reduce/remove if desired
 screen -p 0 -X stuff "echo Worlds saved and $serverName stopped. $(printf \\r)"
 
 screen -p 0 -X stuff "echo Compressing backup on $currentDay...$(printf \\r)"
