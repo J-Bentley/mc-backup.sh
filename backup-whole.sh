@@ -1,13 +1,5 @@
 #!/bin/bash
-# Jordan Bentley 2018-12-15 v1
-# A backup/compression script that gracefully stops the server, with in-game warnings to players.
-
-# MODES
-# -r: Issues warnings to players, saves & restarts server with no backup made.
-# -w: Worlds only mode, compresses the /world/, /world_nether/ & /world_the_end/ ONLY. Modify lines 97 & 93 to add more worlds!
-# -g: Uploads to Gdrive. Requires installation & set gdrivefolderid variable to the folder ID you wish to upload to!
-# -wg: Compress the worlds only and then upload them to gdrive
-# No args: Compresses entire server directory to backup location.
+# Jordan Bentley 12-2018 v1
 
 # --------- Change these ---------
 fileToBackup="/home/me/myserver" # Your server directory.
