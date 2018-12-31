@@ -5,6 +5,7 @@ Has console feedback for manual usage but is best when automated with crontab.
 SETUP: 
 
 *[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)*
+
 Find these variables at the top of the script and change to your needs
 fileToBackup = Your root server directory
 backupLocation= The location to backup the compressed files to
