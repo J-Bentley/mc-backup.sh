@@ -36,6 +36,5 @@ Find these variables at the top of the script and change:
 **gdrivefolderid** = The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here. Doesn't have to be set if not using gdrive mode.  
 
 Might require: ``sudo chmod +x mc-backup.sh``  
-Run with:``bash mc-backup.sh``
 
 
