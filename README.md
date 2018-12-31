@@ -35,7 +35,7 @@ Find these variables at the top of the script and change:
 **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
 **gdrivefolderid** = The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here. Doesn't have to be set if not using gdrive mode.  
 
-``sudo chmod +x mc-backup.sh``
-``bash mc-backup.sh``
+Might require: ``sudo chmod +x mc-backup.sh``  
+Run with:``bash mc-backup.sh``
 
 
