@@ -2,12 +2,12 @@
 # Jordan Bentley 12-2018 v1
 
 # --------- Change these ---------
-fileToBackup="/home/me/myserver" # Your server directory.
-backupLocation="/home/jordan/BACKUP" # Your backup directory. Don't include closing "/"
+fileToBackup="/home/me/myserver" # Server root directory
+backupLocation="/home/me/backup" # Backup directory
 serverName="MyServer"
 startScript="bash start.sh"
-gdrivefolderid="1234455sdkhfjb2434234_e2sdfg4" # "gdrive list" to find yours
-currentDay=$(date +"%m-%d-%Y") # Change to +"%H" or "%M" if creating backup more than once a day
+gdrivefolderid="1234455sdkhfjb2434234_e2sdfg4" # "gdrive list" to find
+currentDay=$(date +"%m-%d-%Y") # Change to +"%H" or "%M" if backing up more than once a day
 # ---------------------------------
  
 gdriveUpload=false
