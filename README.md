@@ -6,11 +6,11 @@ SETUP:
 
 *[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)*  
 Find these variables at the top of the script and change to your needs.  
-fileToBackup = Your root server directory.  
-backupLocation= The location to backup the compressed files to.  
-serverName= The name of your server.  
-startScript= The command to restart the server. Keep in mind this is run from the screen session.  
-gdrivefolderid= The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here.  
+**fileToBackup** = Your root server directory.  
+**backupLocation** = The location to backup the compressed files to.  
+**serverName** = The name of your server.  
+**startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
+**gdrivefolderid** = The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here.  
 
 MODES  
 No args: Compresses entire server directory to backup location.  
