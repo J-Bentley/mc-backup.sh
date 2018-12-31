@@ -1,5 +1,5 @@
 
-## What is it
+## What is it??
 A BASH script built to automatically issue in-game warnings to players, save the worlds, stop the server and compress the server directory or just world folders to a backup location then upload to gdrive if desired.
 
 Has console feedback for manual usage but is best when automated with crontab.
