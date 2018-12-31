@@ -1,6 +1,6 @@
 
 ## What is it??
-A BASH script built to automate restarting & backing up of a Minecraft server on Ubuntu using screen by issuing in-game warnings to players, saving the worlds, stopping the server and then compress the server directory or just world folders to a backup location then upload to gdrive if desired.  
+A BASH script built to automate restarting & backing up of a Minecraft server thats running on Ubuntu using screen by issuing in-game warnings to players, saving the worlds, stopping the server and then compress the server directory or just world folders to a backup location then upload to gdrive if desired.  
 
 
 Has console feedback for manual usage but is best when **automated with crontab**.  
@@ -34,5 +34,7 @@ Find these variables at the top of the script and change:
 **serverName** = The name of your server.  
 **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
 **gdrivefolderid** = The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here. Doesn't have to be set if not using gdrive mode.  
+
+
 
 
