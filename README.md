@@ -4,7 +4,7 @@ Has console feedback for manual usage but is best when automated with crontab.
 
 SETUP:
 
-*[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)*  
+*[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* (not required unless)  
 Find these variables at the top of the script and change  
 **fileToBackup** = Your root server directory.  
 **backupLocation** = The location to backup the compressed files to.  
@@ -13,7 +13,7 @@ Find these variables at the top of the script and change
 **gdrivefolderid** = The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here.  
 
 MODES  
-No args: Compresses entire server directory to backup location.  
+No args: Compresses entire server directory to backup location, does not upload to Gdrive.  
 -r: Issues warnings to players, saves & restarts server with no backup made.  
 -w: Worlds only mode, compresses the /world/, /world_nether/ & /world_the_end/ ONLY. Modify lines 97 & 93 to add more worlds!  
 -g: Uploads to Gdrive. Requires installation & set gdrivefolderid variable to the folder ID you wish to upload to!  
