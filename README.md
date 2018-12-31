@@ -12,13 +12,13 @@ Has console feedback for manual usage but is best when **automated with crontab*
 
 ## Modes  
 
-``bash mc-backup.sh [-h | Help, -r | Restart only with no backup, -w | Backup worlds only, -g | upload whole to Gdrive, -wg | Upload worlds only to Gdrive``
+``bash mc-backup.sh [-h | Help, -r | Restart only with no backup, -w | Backup worlds only, -g | upload whole to Gdrive, -wg | Upload worlds only to Gdrive] ``
 
 No args: Compresses entire server directory to backup location, does not upload to Gdrive.  
--r: Issues warnings to players, saves & restarts server with no backup made.  
--w: Worlds only mode, compresses the ``/world/, /world_nether/ & /world_the_end/`` ONLY. Modify lines 97 & 93 to add more worlds!  
--g: Compresses entire server directory & uploads to Gdrive folder.  
--wg: Compress the worlds only and then upload them to gdrive.  
+-r | Restart: Issues warnings to players, saves & restarts server with no backup made.  
+-w | Worlds: Worlds only mode, compresses the ``/world/, /world_nether/ & /world_the_end/`` ONLY. Modify lines 97 & 93 to add more worlds!  
+-g | Gdrive: Compresses entire server directory & uploads to Gdrive folder.  
+-wg | Worlds&Gdrive: Compress the worlds only and then upload them to gdrive.  
 
 ## Setup  
 *[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* *(not required if not using)*  
