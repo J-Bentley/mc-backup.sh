@@ -6,7 +6,7 @@ MODES
 No args: Compresses entire server directory to backup location, does not upload to Gdrive.  
 -r: Issues warnings to players, saves & restarts server with no backup made.  
 -w: Worlds only mode, compresses the ``/world/, /world_nether/ & /world_the_end/`` ONLY. Modify lines 97 & 93 to add more worlds!  
--g: Compresses entire server directory & uploads to Gdrive folder.
+-g: Compresses entire server directory & uploads to Gdrive folder.  
 -wg: Compress the worlds only and then upload them to gdrive.  
 
 SETUP  
