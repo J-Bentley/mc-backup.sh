@@ -11,6 +11,9 @@ Has console feedback for manual usage but is best when **automated with crontab*
        
 
 ## Modes  
+
+``bash mc-backup.sh [-h | Help, -r | Restart only with no backup, -w | Backup worlds only, -g | upload whole to Gdrive, -wg | Upload worlds only to Gdrive``
+
 No args: Compresses entire server directory to backup location, does not upload to Gdrive.  
 -r: Issues warnings to players, saves & restarts server with no backup made.  
 -w: Worlds only mode, compresses the ``/world/, /world_nether/ & /world_the_end/`` ONLY. Modify lines 97 & 93 to add more worlds!  
