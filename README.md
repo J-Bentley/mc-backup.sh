@@ -1,8 +1,13 @@
 
 ## What is it??
-A BASH script built to automatically issue in-game warnings to players, save the worlds, stop the server and compress the server directory or just world folders to a backup location then upload to gdrive if desired.
+A BASH script built to automate restarting & backing up of a Minecraft server on Ubuntu using screen by issuing in-game warnings to players, saving the worlds, stopping the server and then compress the server directory or just world folders to a backup location then upload to gdrive if desired.
 
-Has console feedback for manual usage but is best when automated with crontab.
+Has console feedback for manual usage but is best when **automated with crontab**.  
+examples: Backs up worlds only every 6 hours
+          Backs up whole directory every day
+          Backs up whole directrory to Gdrive every other day
+          Backs up worlds only to Gdrive every other day
+       
 
 ## Modes  
 No args: Compresses entire server directory to backup location, does not upload to Gdrive.  
