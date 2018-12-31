@@ -10,7 +10,7 @@ No args: Compresses entire server directory to backup location, does not upload 
 -wg: Compress the worlds only and then upload them to gdrive.  
 
 SETUP  
-*[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* *(not required if not using)  
+*[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* *(not required if not using)*  
 Find these variables at the top of the script and change  
 **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
