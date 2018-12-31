@@ -1,13 +1,20 @@
 #!/bin/bash
 # Jordan Bentley 2018-12-15 v1
-# A backup/compression script that gracefully stops the server, with in-game warnings to players
+# A backup/compression script that gracefully stops the server, with in-game warnings to players.
+
+# MODES
+# -r: Issues warnings to players, saves & restarts server with no backup made.
+# -w: Worlds only mode, compresses the /world/, /world_nether/ & /world_the_end/ ONLY. Modify lines 97 & 93 to add more worlds!
+# -g: Uploads to Gdrive. Requires installation & set gdrivefolderid variable to the folder ID you wish to upload to!
+# -wg: Compress the worlds only and then upload them to gdrive
+# No args: Compresses entire server directory to backup location.
 
 # --------- Change these ---------
-fileToBackup="/home/jordan/treescape"
-backupLocation="/home/jordan/BACKUP" # Don't include closing "/"
-serverName="Treescape"
+fileToBackup="/home/me/myserver" # Your server directory.
+backupLocation="/home/jordan/BACKUP" # Your backup directory. Don't include closing "/"
+serverName="MyServer"
 startScript="bash start.sh"
-gdrivefolderid="1GkyWWtwF2dbKFo29E1GC9y1VVhj_UuFG" # gdrive list
+gdrivefolderid="1234455sdkhfjb2434234_e2sdfg4" # "gdrive list" to find yours
 currentDay=$(date +"%m-%d-%Y") # Change to +"%H" or "%M" if creating backup more than once a day
 # ---------------------------------
  
@@ -87,11 +94,11 @@ if $restartOnly; then
     stopHandling
 elif $worldsOnly; then
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay]...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ # $fileToBackup/yourcustomworld/
     screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
 elif $worldUpload; then
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ # $fileToBackup/yourcustomworld/
     screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
 
     screen -p 0 -X stuff "echo Uploading to Gdrive... $(printf \\r)"
