@@ -14,7 +14,7 @@ Has console feedback for manual usage but is best when **automated with crontab*
 
 ``bash mc-backup.sh [-h , -r , -w , -g , -wg ] ``
 
-No args: Compresses entire server directory to backup location, does not upload to Gdrive.  
+**No args:** Compresses entire server directory to backup location, does not upload to Gdrive.  
 
 **-r | Restart:** Issues warnings to players, saves & restarts server with no backup made.  
 
