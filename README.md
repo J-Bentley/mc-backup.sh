@@ -2,7 +2,7 @@ A BASH script built to automatically issue in-game warnings to players, save the
 
 Has console feedback for manual usage but is best when automated with crontab.
 
-SETUP
+SETUP  
 *[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* (not required unless)  
 Find these variables at the top of the script and change  
 **fileToBackup** = Your root server directory.  
