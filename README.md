@@ -12,7 +12,7 @@ No args: Compresses entire server directory to backup location, does not upload 
 SETUP  
 *[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* *(not required if not using)*  
 
-Find these variables at the top of the script and change  
+Find these variables at the top of the script and change:  
 
 **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
