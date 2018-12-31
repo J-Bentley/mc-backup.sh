@@ -2,7 +2,7 @@ A BASH script built to automatically issue in-game warnings to players, save the
 
 Has console feedback for manual usage but is best when automated with crontab.
 
-MODES  
+Modes:  
 No args: Compresses entire server directory to backup location, does not upload to Gdrive.  
 -r: Issues warnings to players, saves & restarts server with no backup made.  
 -w: Worlds only mode, compresses the ``/world/, /world_nether/ & /world_the_end/`` ONLY. Modify lines 97 & 93 to add more worlds!  
