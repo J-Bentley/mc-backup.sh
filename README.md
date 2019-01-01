@@ -1,5 +1,5 @@
 
-## What is it??
+## What is it?
 A BASH script built to automate restarting & backing up of a Minecraft server thats running on Ubuntu using screen by issuing in-game warnings to players, saving the worlds, stopping the server and then compress the server directory or just world folders to a backup location then upload to gdrive if desired.  
 
 
