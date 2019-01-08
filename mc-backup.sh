@@ -15,23 +15,28 @@ worldsOnly=false
 worldUpload=false
 restartOnly=false
 
-gdrivefoldercheck={
-  if ! gdrive list | grep -q "$gdrivefolderid"; then
-    echo "Gdrive folder ID not found!"
-    exit 1
-  fi
-}
+graceperiod="1m"
+screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
 
-stopHandling={
-  screen -p 0 -X stuff "say $serverName is restarting in 2 minutes!$(printf \\r)"
-  sleep 1m
-  screen -p 0 -X stuff "say $serverName is restarting in 1 minute!!$(printf \\r)"
-  sleep 1m
-  screen -p 0 -X stuff "say $serverName is restarting now!$(printf \\r)"
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+stopHandling () {
+  screen -p 0 -X stuff "say $serverName is restarting in $graceperiod!$(printf \\r)"
+  sleep $graceperiod
+  screen -p 0 -X stuff "say $serverName is restarting now!!$(printf \\r)"
   screen -p 0 -X stuff "save-all$(printf \\r)"
   sleep 5
   screen -p 0 -X stuff "stop$(printf \\r)"
   sleep 5
+}
+
+gdrivefoldercheck () {
+  if ! gdrive list | grep -q "$gdrivefolderid"; then
+    echo "Gdrive folder ID ($gdrivefolderid) not found or not installed!"
+    gdrive list
+    exit 1
+  fi
 }
 
 if [ ! -d $fileToBackup ]; then
@@ -44,16 +49,25 @@ if [ ! -d $backupLocation ]; then
     exit 1
 fi
 
-if ! ps -e | grep "java"; then
-    echo "$serverName is not running!"
+if ! ps -e | grep -q "java"; then
+    echo "$serverName is not running! (No Java process found)"
+    exit 1
+fi
+
+if [ $screens -eq 0 ]; then
+    echo "No screen sessions running!"
+    exit 1
+elif [ $screens -gt 1 ]; then
+    echo "More than 1 screen session is running, am confuse!"
+    screen -ls
     exit 1
 fi
 
 while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help)
-      echo "A compression/backup/gdrive script of [$fileToBackup] to [$backupLocation] for $serverName!"
-      echo "Args: -h | help, -r | Restart with warnings, -g | upload to gdrive, -w | compress worlds only, -wg | compress worlds only & upload to gdrive (both options)"
+      echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
+      echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wg | Compress & upload worlds to gdrive\n"
       exit 0
       ;;
     -g|--gdrive)
@@ -71,33 +85,34 @@ while [ $# -gt 0 ]; do
       restartOnly=true
       ;;
     *)
-      echo "Invalid argument: "$1
-      echo "Args: -h | help, -r | Restart with warnings, -g | upload to gdrive, -w | compress worlds only, -wg | compress worlds only & upload to gdrive (both options)"
+      echo -e "${bold}Invalid argument: ${normal}"$1 
+      echo -e "Usage:\nNo args | Compress $serverName's root dir to backup dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wg | Compress & upload worlds to gdrive\n"
       exit 1
       ;;
   esac
   shift
 done
 
-echo "Starting backup of $serverName on $currentDay..."
+echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
+echo "Starting backup script of $serverName on $currentDay..."
 stopHandling
 
 if $restartOnly; then
-    stopHandling
+    screen -p 0 -X stuff "echo $serverName stopped!$(printf \\r)"
 elif $worldsOnly; then
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay]...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ # $fileToBackup/yourcustomworld/
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
     screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
 elif $worldUpload; then
-    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ # $fileToBackup/yourcustomworld/
+    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds*] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
     screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
 
     screen -p 0 -X stuff "echo Uploading to Gdrive... $(printf \\r)"
     gdrive upload -p $gdrivefolderid $backupLocation$serverName-$currentDay.tar.gz
     screen -p 0 -X stuff "echo Upload complete! $(printf \\r)"
 else
-    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup] to [$backupLocation] on [$currentDay]...$(printf \\r)"
+    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/] to [$backupLocation/] on [$currentDay]...$(printf \\r)"
     tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
     screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
 fi
@@ -114,13 +129,13 @@ screen -p 0 -X stuff "$startScript $(printf \\r)"
 if $restartOnly; then
     echo "$serverName restarted on $currentDay!"
 else
-    compressedSize=$(du -sh $backupLocation* | cut -c 1-5)
-    uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-5)
-    echo "[$fileToBackup] ($uncompressedSize) compressed to [$backupLocation] ($compressedSize) :"
+    compressedSize=$(du -sh $backupLocation* | cut -c 1-4)
+    uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-4)
+    echo "[$fileToBackup] ($uncompressedSize) successfully compressed to [$backupLocation] ($compressedSize):"
     ls -a $backupLocation
 fi
 
-#sleep 30
-#screen -p 0 -X stuff "say Welcome back! $serverName weights $uncompressedSize.(printf \\r)"
+#sleep $graceperiod
+#screen -p 0 -X stuff "say Welcome back! $serverName weights $uncompressedSize!(printf \\r)"
 
 exit 0
