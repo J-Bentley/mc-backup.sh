@@ -7,7 +7,7 @@ Has console feedback for manual usage but is best when **automated with crontab*
 
        
 
-## Modes  
+## Usage  
 
 ``bash mc-backup.sh [-h , -r , -w , -g , -wg ] ``
 
