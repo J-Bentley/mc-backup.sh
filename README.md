@@ -24,7 +24,7 @@ Has console feedback for manual usage but is best when **automated with crontab*
 ## Setup  
 *[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* *(not required if not using)*  
 
-Find these variables at the top of the script and change:  
+Find these variables at the top of the script and change them:  
 
 **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
@@ -40,5 +40,5 @@ Might require: ``sudo chmod +x mc-backup.sh``
 - Option to turn off output to running console as it should be run as crontab (does it matter though?)
 - Change Gdrive to ftp or seafile, or add it
 - If external upload is selected (gdrive/ftp/seafile) restart the server after tar is complete and let upload in background?
-
+- Print time elapsed after tar and external upload
 
