@@ -34,7 +34,7 @@ Find these variables at the top of the script and change:
 
 Might require: ``sudo chmod +x mc-backup.sh``  
 
-##TODO
+## TODO
  - Worlds are entered as an array at top of script and then tarred like one, instead of manually adding the world dir to the tar command if you have more worlds than the default world, nether, end.
  - Better output to screen
 - Option to turn off output to running console as it should be run as crontab (does it matter though?)
