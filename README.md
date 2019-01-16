@@ -39,5 +39,6 @@ Might require: ``sudo chmod +x mc-backup.sh``
  - Better output to screen
 - Option to turn off output to running console as it should be run as crontab (does it matter though?)
 - Change Gdrive to ftp or seafile, or add it
+- If external upload is selected (gdrive/ftp/seafile) restart the server after tar is complete and let upload in background?
 
 
