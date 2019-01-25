@@ -1,5 +1,5 @@
 #!/bin/bash
-# Jordan Bentley 2018-12-15 v1
+# Jordan Bentley 2018-12-15
 # A compression script that gracefully stops a Minecraft server running on Screen, with in-game warnings to players and backup methods.
 
 #--------- Change these ---------
