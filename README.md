@@ -38,7 +38,7 @@ Might require: ``sudo chmod +x mc-backup.sh``
 ## TODO
 - Worlds are entered as an array at top of script and then tarred like one. [✓]
 - Print time elapsed [✓]
-- Email or text message sent upon success (twilio)
+- Email or text message sent upon success
 - Option to turn off output to running console as it should be run as crontab (does it matter though?)
 - Change Gdrive to ftp or seafile, or add it. (with same worldonly functionality)
 - If external upload is selected (gdrive/ftp/seafile) restart the server after tar is complete and let upload in background?
