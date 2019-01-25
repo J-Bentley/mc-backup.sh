@@ -21,10 +21,8 @@ Has console feedback for manual usage but is best when **automated with crontab*
 
 - **-wg | Worlds&Gdrive:** Compress the worlds only and then upload them to gdrive.  
 
-## Setup  
-*[Install Gdrive](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)* *(not required if not using)*  
-
-Find these variables at the top of the script and change them:  
+## Setup    
+Simply open the script in a text editor and change these variables at the top:  
 
 **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
