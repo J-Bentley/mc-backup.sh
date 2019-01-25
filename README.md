@@ -15,11 +15,11 @@ Has console feedback for manual usage but is best when **automated with crontab*
 
 - **-r | Restart:** Issues warnings to players, saves & restarts server with no backup made.  
 
-- **-w | Worlds:** Worlds only mode, compresses the ``/world/, /world_nether/ & /world_the_end/`` ONLY. Modify lines 97 & 93 to add more worlds!  
+- **-w | Worlds:** Compresses world directories only to backup location, does not upload to Gdrive.  
 
-- **-g | Gdrive:** Compresses entire server directory & uploads to Gdrive folder.  
+- **-g | Gdrive:** Compresses entire server directory to backup location & uploads to Gdrive folder.  
 
-- **-wg | Worlds&Gdrive:** Compress the worlds only and then upload them to gdrive.  
+- **-wg | Worlds&Gdrive:** Compresses world directories only to backup location & uploads to Gdrive folder.    
 
 ## Setup    
 Simply open the script in a text editor and change these variables at the top:  
