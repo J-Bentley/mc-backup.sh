@@ -1,11 +1,6 @@
 
 ## What is it?
-A BASH script built to automate restarting & backing up of a Minecraft server thats running on Ubuntu using screen by issuing in-game warnings to players, saving the worlds, stopping the server and then compress the server directory or just world folders to a backup location then upload to gdrive if desired.  
-
-
-Has console feedback for manual usage but is best when **automated with crontab**.  
-
-       
+A BASH script to automate restarting & backing up of a Spigot/Paper/Minecraft server running on Ubuntu by injecting commands into an already running Screen session to issue in-game warnings to players, save the worlds, stop the server and then compress the server directory or just world folders to a backup location then upload remotely if desired.
 
 ## Usage  
 
