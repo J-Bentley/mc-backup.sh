@@ -106,22 +106,24 @@ if $restartOnly; then
     screen -p 0 -X stuff "echo $serverName stopped!$(printf \\r)"
 elif $worldsOnly; then
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay]...$(printf \\r)"
-
     tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null
     for item in "${serverWorlds[@]}"
     do
         tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
     done
     gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
-    #tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
     screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
-
 elif $worldUpload; then
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds*] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null
+    for item in "${serverWorlds[@]}"
+    do
+        tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
+    done
+    gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
     screen -p 0 -X stuff "echo Compression complete! Uploading to Gdrive... $(printf \\r)"
 
-    gdrive upload -p $gdrivefolderid $backupLocation$serverName-$currentDay.tar.gz
+    gdrive upload -p $gdrivefolderid $backupLocation/$serverName[WORLDS]-$currentDay.tar
     screen -p 0 -X stuff "echo Upload complete! $(printf \\r)"
 else
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/] to [$backupLocation/] on [$currentDay]...$(printf \\r)"
