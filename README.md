@@ -17,9 +17,12 @@ Has console feedback for manual usage but is best when **automated with crontab*
 
 - **-w | Worlds:** Compresses world directories only to backup location, does not upload to Gdrive.  
 
-- **-g | Gdrive:** Compresses entire server directory to backup location & uploads to Gdrive folder.  
+- **-g | Gdrive:** Compresses entire server directory to backup location & uploads to Gdrive folder. 
+Requires Gdrive isntalled of course.  
 
 - **-wg | Worlds&Gdrive:** Compresses world directories only to backup location & uploads to Gdrive folder.    
+
+
 
 ## Setup    
 Simply open the script in a text editor and change these variables at the top:  
