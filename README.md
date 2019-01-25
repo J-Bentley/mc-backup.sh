@@ -30,15 +30,19 @@ Find these variables at the top of the script and change them:
 **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
 **serverName** = The name of your server.  
 **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
+**serverWorlds** = An array of the servers world names for worldonly mode. Includes defaults, add any of your custom worlds here to be backed up.  
 **gdrivefolderid** = The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here. Doesn't have to be set if not using gdrive mode.  
+**currentDay** = A unique identifier for the file-name. Include %H for hour if doing more than once a day!
+**gracePeriod** = The time to wait after first warning.  
 
 Might require: ``sudo chmod +x mc-backup.sh``  
 
 ## TODO
- - Worlds are entered as an array at top of script and then tarred like one, instead of manually adding the world dir to the tar command if you have more worlds than the default world, nether, end.
- - Better output to screen
+- Worlds are entered as an array at top of script and then tarred like one. [✓]
+- Print time elapsed [✓]
+- Email or text message sent upon success (twilio)
 - Option to turn off output to running console as it should be run as crontab (does it matter though?)
-- Change Gdrive to ftp or seafile, or add it
+- Change Gdrive to ftp or seafile, or add it. (with same worldonly functionality)
 - If external upload is selected (gdrive/ftp/seafile) restart the server after tar is complete and let upload in background?
-- Print time elapsed after tar and external upload
+
 
