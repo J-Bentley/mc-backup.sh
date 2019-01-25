@@ -1,21 +1,23 @@
 #!/bin/bash
-# Jordan Bentley 12-2018 v1
+# Jordan Bentley 2018-12-15 v1
+# A compression script that gracefully stops a Minecraft server running on Screen, with in-game warnings to players and backup methods.
 
-# --------- Change these ---------
-fileToBackup="/home/me/myserver" # Server root directory
-backupLocation="/home/me/backup" # Backup directory
+#--------- Change these ---------
+fileToBackup="/home/me/MinecraftServer"
+backupLocation="/home/me/Backup"
 serverName="MyServer"
 startScript="bash start.sh"
-gdrivefolderid="1234455sdkhfjb2434234_e2sdfg4" # "gdrive list" to find
-currentDay=$(date +"%m-%d-%Y") # Change to +"%H" or "%M" if backing up more than once a day
-# ---------------------------------
- 
+serverWorlds=("world" "world_nether" "world_the_end")
+gdrivefolderid="NotSet"
+currentDay=$(date +"%m-%d-%Y")
+graceperiod="1m"
+#---------------------------------
+
 gdriveUpload=false
 worldsOnly=false
 worldUpload=false
 restartOnly=false
 
-graceperiod="1m"
 screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
 
 bold=$(tput bold)
@@ -32,9 +34,11 @@ stopHandling () {
 }
 
 gdrivefoldercheck () {
-  if ! gdrive list | grep -q "$gdrivefolderid"; then
+  if ! ps -e | grep -q "gdrive"; then
+    echo "Gdrive not installed! (No Gdrive process found)"
+    exit 1
+  elif ! gdrive list | grep -q "$gdrivefolderid"; then
     echo "Gdrive folder ID ($gdrivefolderid) not found or not installed!"
-    gdrive list
     exit 1
   fi
 }
@@ -94,21 +98,29 @@ while [ $# -gt 0 ]; do
 done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
-echo "Starting backup script of $serverName on $currentDay..."
+echo "Starting backup on $currentDay..."
+elapsedTimeStart="$(date -u +%s)"
 stopHandling
 
 if $restartOnly; then
     screen -p 0 -X stuff "echo $serverName stopped!$(printf \\r)"
 elif $worldsOnly; then
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay]...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
+
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null
+    for item in "${serverWorlds[@]}"
+    do
+        tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
+    done
+    gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
+    #tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
     screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
+
 elif $worldUpload; then
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds*] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
     tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar $fileToBackup/world/ $fileToBackup/world_nether/ $fileToBackup/world_the_end/ $fileToBackup/island/
-    screen -p 0 -X stuff "echo Compression complete!$(printf \\r)"
+    screen -p 0 -X stuff "echo Compression complete! Uploading to Gdrive... $(printf \\r)"
 
-    screen -p 0 -X stuff "echo Uploading to Gdrive... $(printf \\r)"
     gdrive upload -p $gdrivefolderid $backupLocation$serverName-$currentDay.tar.gz
     screen -p 0 -X stuff "echo Upload complete! $(printf \\r)"
 else
@@ -123,19 +135,17 @@ if $gdriveUpload; then
     screen -p 0 -X stuff "echo Upload complete! $(printf \\r)"
 fi
 
-screen -p 0 -X stuff "echo Restarting $serverName... $(printf \\r)"
+elapsedTimeEnd="$(date -u +%s)"
+screen -p 0 -X stuff "echo Starting $serverName... $(printf \\r)"
 screen -p 0 -X stuff "$startScript $(printf \\r)"
 
 if $restartOnly; then
     echo "$serverName restarted on $currentDay!"
 else
-    compressedSize=$(du -sh $backupLocation* | cut -c 1-4)
-    uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-4)
-    echo "[$fileToBackup] ($uncompressedSize) successfully compressed to [$backupLocation] ($compressedSize):"
-    ls -a $backupLocation
+    elapsed="$(($elapsedTimeEnd-$elapsedTimeStart/60))"
+    compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
+    uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
+    echo "[$fileToBackup] ($uncompressedSize) successfully compressed to [$backupLocation] ($compressedSize) in $elapsed minutes!"
 fi
-
-#sleep $graceperiod
-#screen -p 0 -X stuff "say Welcome back! $serverName weights $uncompressedSize!(printf \\r)"
 
 exit 0
