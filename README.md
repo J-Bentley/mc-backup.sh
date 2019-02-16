@@ -28,12 +28,12 @@ Simply open the script in a text editor and change these variables at the top:
 **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
 **serverWorlds** = An array of the servers world names for worldonly mode. Includes defaults, add any of your custom worlds here to be backed up.  
 **gdrivefolderid** = The ID of the folder you wish to upload to (required) use "gdrive list" and copy/paste the ID here. Doesn't have to be set if not using gdrive mode.  
-**currentDay** = A unique identifier for the file-name. Include %H for hour if doing more than once a day!
+**currentDay** = A unique identifier for the file-name. Include %H for hour if doing more than once a day!  
 **gracePeriod** = The time to wait after first warning.  
 
 Might require: ``sudo chmod +x mc-backup.sh``  
 
-## TODO
+## TODO (version control lol)
 - Worlds are entered as an array at top of script and then tarred like one. [✓]
 - Print time elapsed and do some math to it [almost ✓]
 - Email or text message sent upon success (twilio api)
