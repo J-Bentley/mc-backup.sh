@@ -20,7 +20,7 @@ A BASH script to automate restarting & backing up of a Spigot/Paper/Minecraft se
 
 
 ## Setup    
-Simply open the script in a text editor and change these variables at the top:  
+Be a man, open the script in a text editor and change these variables at the top:  
 
 **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
