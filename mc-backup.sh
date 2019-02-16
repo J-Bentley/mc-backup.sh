@@ -100,12 +100,13 @@ while [ $# -gt 0 ]; do
 done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
-echo "Starting backup on $currentDay..."
-elapsedTimeStart="$(date -u +%s)"
+echo "Script started on $currentDay..."
 
 if $serverRunning; then
     stopHandling
 fi
+
+elapsedTimeStart="$(date -u +%s)"
 
 if $restartOnly; then
     screen -p 0 -X stuff "echo $serverName stopped! Restarting $serverName...$(printf \\r)"
