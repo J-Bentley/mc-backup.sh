@@ -13,7 +13,7 @@ A BASH script to automate restarting & backing up of a Spigot/Paper/Minecraft se
 - **-w | Worlds:** Compresses world directories only to backup location, does not upload to Gdrive.  
 
 - **-g | Gdrive:** Compresses entire server directory to backup location & uploads to Gdrive folder. 
-Requires Gdrive installed of course.  
+[Requires Gdrive installed of course](https://olivermarshall.net/how-to-upload-a-file-to-google-drive-from-the-command-line/)  
 
 - **-wg | Worlds&Gdrive:** Compresses world directories only to backup location & uploads to Gdrive folder.    
 
