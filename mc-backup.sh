@@ -148,10 +148,10 @@ elapsed="$(($elapsedTimeEnd-$elapsedTimeStart))"
 screen -p 0 -X stuff "$startScript $(printf \\r)"
 
 if $restartOnly; then
-    echo "$serverName restarted on $currentDay in $((elapsed/60))!"
+    echo "$serverName restarted on $currentDay in $((elapsed/60)) minutes!"
 else
     compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
-    echo "[$fileToBackup] ($uncompressedSize) successfully compressed to [$backupLocation] ($compressedSize) in $((elapsed/60))!"
+    echo "[$fileToBackup] ($uncompressedSize) successfully compressed to [$backupLocation] ($compressedSize) in $((elapsed/60)) minutes!"
 fi
 exit 0
