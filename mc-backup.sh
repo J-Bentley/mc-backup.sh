@@ -1,26 +1,27 @@
 #!/bin/bash
-# Jordan Bentley 2018-12-15
-# A compression script that gracefully stops a Minecraft server running on Ubuntu within a Screen session, with in-game warnings to players and external backup methods
-# Dependancies: screen, tput, tar, gzip, stuff
-
-# User Configuration Variables -- change these!
+: '
+Jordan Bentley 2018-12-15
+A compression script that gracefully stops a Minecraft server running on Ubuntu within a Screen session, with in-game warnings to players and external backup methods
+Setup & usage @ https://github.com/J-Bentley/mc-backup.sh/blob/master/README.md
+'
+# User Configuration Variables -- change these BEFORE running!
 fileToBackup="/home/me/MinecraftServer"
 backupLocation="/home/me/Backup"
 serverName="MyServer"
 startScript="bash start.sh"
-serverWorlds=("world" "world_nether" "world_the_end") #add your non vanilla world names here seperated by space ex. "lobby" "creative" "arena"
-gdrivefolderid="NotSet" #use "gdrive list" to find the gdrive folder ID you wish to upload to and paste it here, not required if not using gdrive
-currentDay=$(date +"%m-%d-%Y") #unique file identifier, add %H if running more than once a day to avoid duplicates
-graceperiod="1m" #time to wait between in-game warnings to players of restart
-#---------------
+serverWorlds=("world" "world_nether" "world_the_end")
+gdrivefolderid="NotSet"
+currentDay=$(date +"%m-%d-%Y")
+graceperiod="1m"
+#-------------------------------------------
+
+screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
+serverRunning=true
 
 gdriveUpload=false
 worldsOnly=false
 worldUpload=false
 restartOnly=false
-
-screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
-serverRunning=true
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -66,6 +67,12 @@ if [ $screens -eq 0 ]; then
     exit 1
 elif [ $screens -gt 1 ]; then
     echo "More than 1 screen session is running, am confuse!"
+    exit 1
+fi
+
+if [ $# -gt 1 ]; then
+    echo -e "${bold}Too many arguments!${normal}"
+    echo -e "Usage:\nNo args | Compress $serverName's root dir to backup dir\n-h | Help\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wg | Compress & upload worlds to gdrive\n"
     exit 1
 fi
 
@@ -148,7 +155,7 @@ elapsed="$(($elapsedTimeEnd-$elapsedTimeStart))"
 screen -p 0 -X stuff "$startScript $(printf \\r)"
 
 if $restartOnly; then
-    echo "$serverName restarted on $currentDay in $((elapsed/60)) minutes!"
+    echo "$serverName restarted on $currentDay in $((elapsed/60)) minute(s)!"
 else
     compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
