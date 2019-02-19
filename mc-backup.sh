@@ -11,7 +11,7 @@ serverName="MyServer"
 startScript="bash start.sh"
 serverWorlds=("world" "world_nether" "world_the_end")
 gdrivefolderid="notneededifnotusing"
-currentDay=$(date +"%m-%d-%Y")
+currentDay=$(date +"%Y-%m-%d")
 graceperiod="1m"
 #-----------------------------------------
 
@@ -36,7 +36,6 @@ stopHandling () {
   screen -p 0 -X stuff "stop$(printf \\r)"
   sleep 5
 }
-
 gdrivefoldercheck () {
   if ! ps -e | grep -q "gdrive"; then # probably doesnt work
     echo "Error: Gdrive not installed or running!"
@@ -46,7 +45,6 @@ gdrivefoldercheck () {
     exit 1
   fi
 }
-
 worldfoldercheck () {
   for item in "${serverWorlds[@]}"
   do
@@ -55,7 +53,6 @@ worldfoldercheck () {
         exit 1
   done
 }
-
 willitfit () {
   #Makes a judgment based off the UNCOMPRESSED server folder size if it will fit in backupLocation, although it may fit when COMPRESSED
   backupLocationFree=$(stat -c%s "$backupLocation")
@@ -129,6 +126,7 @@ done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
 echo "Script started on $currentDay..."
+
 
 if ! $restartOnly; then
     willitfit
