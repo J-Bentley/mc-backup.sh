@@ -32,13 +32,18 @@ Might require: ``sudo chmod +x mc-backup.sh``
 - **-wg | Worlds&Gdrive:** Compresses world directories only to backup location & uploads to Gdrive folder.    
 
 ## UPDATES
-- v2: echos time elapsed & file sizes, worldsonly mode, remote upload to gdrive
+- v2
+	- Echos time elapsed upon finish
+	- Echos compressed/uncompressed folder sizes
+	- Worlds only mode with custom world name support
+	- Gdrive as external upload method (may change)
+	- Error checking 
 
 ## TODO
-- Error check if world files exist before tarring in world only mode
 - Plugin only mode ala world only mode
 - Email or text message sent upon success (twilio api)
 - Change Gdrive to ftp or seafile, or add it. (with same worldonly functionality)
 - If external upload is selected restart the server after tar is complete and let upload in background?
-- Standardize ouput to screen/echo
+- Standardize ouput to screen and/or echo
+- Crontab tutorial of some sort in readme
 
