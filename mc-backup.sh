@@ -1,19 +1,19 @@
 #!/bin/bash
-: '
-Jordan Bentley 2018-12-15
-A compression script that gracefully stops a Minecraft server running on Ubuntu within a Screen session, with in-game warnings to players and external backup methods
-Setup & usage @ https://github.com/J-Bentley/mc-backup.sh/blob/master/README.md
-'
-# User Configuration Variables -- change these BEFORE running!
+:'
+MC-BACKUP version 2.0 
+by Arcaniist 2018-12-15
+https://github.com/J-Bentley/mc-backup.sh/blob/master/README.md
+
+Set these to your needs BEFORE running!'
 fileToBackup="/home/me/MinecraftServer"
 backupLocation="/home/me/Backup"
 serverName="MyServer"
 startScript="bash start.sh"
 serverWorlds=("world" "world_nether" "world_the_end")
-gdrivefolderid="NotSet"
+gdrivefolderid="notneededifnotusing"
 currentDay=$(date +"%m-%d-%Y")
 graceperiod="1m"
-#-------------------------------------------
+#-----------------------------------------
 
 screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
 serverRunning=true
@@ -39,34 +39,43 @@ stopHandling () {
 
 gdrivefoldercheck () {
   if ! ps -e | grep -q "gdrive"; then # probably doesnt work
-    echo "Gdrive not installed or running!"
+    echo "Error: Gdrive not installed or running!"
     exit 1
   elif ! gdrive list | grep -q "$gdrivefolderid"; then # greps for gdrivefolderid from gdrive list
-    echo "Gdrive folder ID ($gdrivefolderid) not found!"
+    echo "Error: Gdrive folder ID ($gdrivefolderid) not found!"
     exit 1
   fi
 }
 
+worldfoldercheck () {
+  for item in "${serverWorlds[@]}"
+  do
+    if [! -d $backupLocation/$item ]; then
+        echo "Error: World folder not found! ($backupLocation/$item)"
+        exit 1
+  done
+}
+
 if [ ! -d $fileToBackup ]; then
-    echo "Minecraft server folder not found! ($fileToBackup)"
+    echo "Error: Server folder not found! ($fileToBackup)"
     exit 1
 fi
 
 if [ ! -d $backupLocation ]; then
-    echo "Backup folder not found! ($backupLocation)"
+    echo "Error: Backup folder not found! ($backupLocation)"
     exit 1
 fi
 
 if ! ps -e | grep -q "java"; then
-    echo "$serverName is not running! Continuing without in-game warnings..."
-    serverRunning=false
+    echo "Warning: $serverName is not running! Continuing without in-game warnings..."
+    serverRunning=false #stopHandling wont be run
 fi
 
 if [ $screens -eq 0 ]; then
-    echo "No screen sessions running!"
+    echo "Error: No screen sessions running!"
     exit 1
 elif [ $screens -gt 1 ]; then
-    echo "More than 1 screen session is running, am confuse!"
+    echo "Error: More than 1 screen session is running, am confuse!"
     exit 1
 fi
 
@@ -88,9 +97,11 @@ while [ $# -gt 0 ]; do
       gdriveUpload=true
       ;;
     -w|--worlds)
+      worldfoldercheck
       worldsOnly=true
       ;;
     -wg|--worldupload)
+      worldfoldercheck
       gdrivefoldercheck
       worldUpload=true
       ;;
@@ -159,6 +170,6 @@ if $restartOnly; then
 else
     compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
-    echo "[$fileToBackup] ($uncompressedSize) successfully compressed to [$backupLocation] ($compressedSize) in $((elapsed/60)) minutes!"
+    echo "[$fileToBackup] ($uncompressedSize) compressed to [$backupLocation] ($compressedSize) in $((elapsed/60)) minutes!"
 fi
 exit 0
