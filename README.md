@@ -37,8 +37,9 @@ Might require: ``sudo chmod +x mc-backup.sh``
 	- Echos compressed/uncompressed folder sizes
 	- Worlds only mode with custom world name support
 	- Gdrive as external upload method (may change)
-	- Error checking 
-
+	- Error checking: world folders, server & backup folders, java running, only 1 screen session, gdrive check etc
+	- Date formatted like windows does it
+	
 ## TODO
 - Plugin only mode ala world only mode
 - Email or text message sent upon success (twilio api)
