@@ -56,6 +56,16 @@ worldfoldercheck () {
   done
 }
 
+willitfit () {
+  #Makes a judgment based off the UNCOMPRESSED server folder size if it will fit in backupLocation, although it may fit when COMPRESSED
+  backupLocationFree=$(stat -c%s "$backupLocation")
+  fileToBackupSize=$(stat -c%s "$fileToBackup")
+  if [ $fileToBackupSize -gt $backupLocationFree ]; then
+    echo "Error: Not enough free space in $backupLocation!"
+    exit 1
+  fi
+}
+
 if [ ! -d $fileToBackup ]; then
     echo "Error: Server folder not found! ($fileToBackup)"
     exit 1
@@ -119,6 +129,10 @@ done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
 echo "Script started on $currentDay..."
+
+if ! $restartOnly; then
+    willitfit
+fi
 
 if $serverRunning; then
     stopHandling
