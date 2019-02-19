@@ -1,6 +1,6 @@
 #!/bin/bash
 :'
-MC-BACKUP version 2.0 
+MC-BACKUP version 3.0 
 by Arcaniist 2018-12-15
 https://github.com/J-Bentley/mc-backup.sh/blob/master/README.md
 
