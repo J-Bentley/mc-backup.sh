@@ -21,6 +21,8 @@ serverRunning=true
 gdriveUpload=false
 worldsOnly=false
 worldUpload=false
+pluginOnly=false
+pluginUpload=false
 restartOnly=false
 
 bold=$(tput bold)
@@ -88,7 +90,7 @@ fi
 
 if [ $# -gt 1 ]; then
     echo -e "${bold}Too many arguments!${normal}"
-    echo -e "Usage:\nNo args | Compress $serverName's root dir to backup dir\n-h | Help\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wg | Compress & upload worlds to gdrive\n"
+    echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wu | Compress & upload worlds to gdrive\n-p | Compress plugins only\n-pu | Compress & upload plugins to gdrive"
     exit 1
 fi
 
@@ -96,7 +98,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help)
       echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
-      echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wg | Compress & upload worlds to gdrive\n"
+      echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wu | Compress & upload worlds to gdrive\n-p | Compress plugins only\n-pu | Compress & upload plugins to gdrive"
       exit 0
       ;;
     -g|--gdrive)
@@ -107,18 +109,24 @@ while [ $# -gt 0 ]; do
       worldfoldercheck
       worldsOnly=true
       ;;
-    -wg|--worldupload)
+    -wu|--worldupload)
       worldfoldercheck
       gdrivefoldercheck
       worldUpload=true
+      ;;
+    -p|--plugin)
+      pluginOnly=true
+      ;;
+    -pu|--pluginupload)
+      pluginUpload=true
       ;;
     -r|--restart)
       restartOnly=true
       ;;
     *)
       echo -e "${bold}Invalid argument: ${normal}"$1 
-      echo -e "Usage:\nNo args | Compress $serverName's root dir to backup dir\n-h | Help\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wg | Compress & upload worlds to gdrive\n"
-      exit 1
+      echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wu | Compress & upload worlds to gdrive\n-p | Compress plugins only\n-pu | Compress & upload plugins to gdrive"
+d      exit 1
       ;;
   esac
   shift
@@ -126,7 +134,6 @@ done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
 echo "Script started on $currentDay..."
-
 
 if ! $restartOnly; then
     willitfit
@@ -158,8 +165,17 @@ elif $worldUpload; then
     done
     gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
     screen -p 0 -X stuff "echo Compression complete! Uploading to Gdrive... $(printf \\r)"
-
     gdrive upload -p $gdrivefolderid $backupLocation/$serverName[WORLDS]-$currentDay.tar
+    screen -p 0 -X stuff "echo Upload complete! Restarting $serverName...$(printf \\r)"
+elif $pluginOnly; then
+    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
+    tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
+    screen -p 0 -X stuff "echo Compression complete! Restarting $serverName...$(printf \\r)"
+elif $pluginUpload; then
+    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
+    tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
+    screen -p 0 -X stuff "echo Compression complete! Uploading to Gdrive...$(printf \\r)"
+    gdrive upload -p $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz
     screen -p 0 -X stuff "echo Upload complete! Restarting $serverName...$(printf \\r)"
 else
     screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/] to [$backupLocation/] on [$currentDay]...$(printf \\r)"
