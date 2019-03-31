@@ -2,7 +2,7 @@
 :'
 MC-BACKUP version 3.0 
 by Arcaniist 2018-12-15
-https://github.com/J-Bentley/mc-backup.sh/blob/master/README.md
+https://github.com/J-Bentley/mc-backup.sh
 
 Set these to your needs BEFORE running!'
 fileToBackup="/home/me/MinecraftServer"
@@ -11,10 +11,15 @@ serverName="MyServer"
 startScript="bash start.sh"
 serverWorlds=("world" "world_nether" "world_the_end")
 gdrivefolderid="notneededifnotusing"
-currentDay=$(date +"%Y-%m-%d")
 graceperiod="1m"
-#-----------------------------------------
+#----------------------------------
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+# for bolding text
+
+currentDay=$(date +"%Y-%m-%d")
+currentTime=$(date + "${bold}[%H:%M]${normal}")
 screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
 serverRunning=true
 
@@ -25,27 +30,28 @@ pluginOnly=false
 pluginUpload=false
 restartOnly=false
 
-bold=$(tput bold)
-normal=$(tput sgr0)
-#for bolding output in cli
-
 stopHandling () {
   screen -p 0 -X stuff "say $serverName is restarting in $graceperiod!$(printf \\r)"
   sleep $graceperiod
-  screen -p 0 -X stuff "say $serverName is restarting now!!$(printf \\r)"
+  screen -p 0 -X stuff "say $serverName is restarting now!$(printf \\r)"
   screen -p 0 -X stuff "save-all$(printf \\r)"
   sleep 5
   screen -p 0 -X stuff "stop$(printf \\r)"
   sleep 5
 }
-gdrivefoldercheck () {
-  if ! ps -e | grep -q "gdrive"; then # probably doesnt work
+gdrivefoldercheck () { # NEEDS TESTING NEEDS TESTING NEEDS TESTING NEEDS TESTING
+  if ! ps -e | grep -q "gdrive"; then 
     echo "Error: Gdrive not installed or running!"
     exit 1
-  elif ! gdrive list | grep -q "$gdrivefolderid"; then # greps for gdrivefolderid from gdrive list
+  elif ! gdrive list | grep -q "$gdrivefolderid"; then 
     echo "Error: Gdrive folder ID ($gdrivefolderid) not found!"
     exit 1
   fi
+}
+gdriveDelete () {
+  #Deletes contents of gdrive folder before uploading newest compression as gdrive has 15gb limit
+  #gdrive list $gdrivefolderid
+  #gdrive delete contents of $gdrivefolderid but not folder itself
 }
 worldfoldercheck () {
   for item in "${serverWorlds[@]}"
@@ -132,7 +138,7 @@ while [ $# -gt 0 ]; do
 done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
-echo "Script started on $currentDay..."
+echo "$currentTime Script started on $currentDay..."
 
 if ! $restartOnly; then
     willitfit
@@ -145,47 +151,47 @@ fi
 elapsedTimeStart="$(date -u +%s)"
 
 if $restartOnly; then
-    screen -p 0 -X stuff "echo $serverName stopped! Restarting $serverName...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Restarting $serverName...$(printf \\r)"
 elif $worldsOnly; then
-    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay]...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null
+    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay]...$(printf \\r)"
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null #starts the tar with files from the void so that multiple files can be looped in from array
     for item in "${serverWorlds[@]}"
     do
         tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
     done
     gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
-    screen -p 0 -X stuff "echo Compression complete! Restarting $serverName...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Compression complete! Restarting $serverName...$(printf \\r)"
 elif $worldUpload; then
-    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/worlds*] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/worlds*] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
     tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null
     for item in "${serverWorlds[@]}"
     do
         tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
     done
     gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
-    screen -p 0 -X stuff "echo Compression complete! Uploading to Gdrive... $(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Compression complete! Uploading to Gdrive... $(printf \\r)"
     gdrive upload -p $gdrivefolderid $backupLocation/$serverName[WORLDS]-$currentDay.tar
-    screen -p 0 -X stuff "echo Upload complete! Restarting $serverName...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Upload complete! Restarting $serverName...$(printf \\r)"
 elif $pluginOnly; then
-    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
     tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
-    screen -p 0 -X stuff "echo Compression complete! Restarting $serverName...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Compression complete! Restarting $serverName...$(printf \\r)"
 elif $pluginUpload; then
-    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
     tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
-    screen -p 0 -X stuff "echo Compression complete! Uploading to Gdrive...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Compression complete! Uploading to Gdrive...$(printf \\r)"
     gdrive upload -p $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz
-    screen -p 0 -X stuff "echo Upload complete! Restarting $serverName...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Upload complete! Restarting $serverName...$(printf \\r)"
 else
-    screen -p 0 -X stuff "echo $serverName stopped! Compressing [$fileToBackup/] to [$backupLocation/] on [$currentDay]...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/] to [$backupLocation/] on [$currentDay]...$(printf \\r)"
     tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
-    screen -p 0 -X stuff "echo Compression complete! Restarting $serverName...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Compression complete! Restarting $serverName...$(printf \\r)"
 fi
 
 if $gdriveUpload; then
-    screen -p 0 -X stuff "echo Uploading to Gdrive... $(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Uploading to Gdrive... $(printf \\r)"
     gdrive upload -p $gdrivefolderid $backupLocation/$serverName-$currentDay.tar.gz
-    screen -p 0 -X stuff "echo Upload complete! Restarting $serverName...$(printf \\r)"
+    screen -p 0 -X stuff "echo $currentTime Upload complete! Restarting $serverName...$(printf \\r)"
 fi
 
 elapsedTimeEnd="$(date -u +%s)"
@@ -193,10 +199,10 @@ elapsed="$(($elapsedTimeEnd-$elapsedTimeStart))"
 screen -p 0 -X stuff "$startScript $(printf \\r)"
 
 if $restartOnly; then
-    echo "$serverName restarted on $currentDay in $((elapsed/60)) minute(s)!"
+    echo "$serverName $currentTime restarted on $currentDay in $((elapsed/60)) minute(s)!"
 else
     compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
-    echo "[$fileToBackup] ($uncompressedSize) compressed to [$backupLocation] ($compressedSize) in $((elapsed/60)) minutes!"
+    echo "$currentTime [$fileToBackup] ($uncompressedSize) compressed to [$backupLocation] ($compressedSize) in $((elapsed/60)) minutes!"
 fi
 exit 0
