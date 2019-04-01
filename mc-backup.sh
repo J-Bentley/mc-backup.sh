@@ -17,7 +17,6 @@ ftpCreds=("user" "password" "ip" "/home/me/backup")
 
 bold=$(tput bold)
 normal=$(tput sgr0)
-# for bolding text
 
 currentDay=$(date +"%Y-%m-%d")
 currentTime=$(date + "${bold}[%H:%M]${normal}")
@@ -41,10 +40,12 @@ stopHandling () {
 }
 gdrivefoldercheck () { # NEEDS TESTING
   if ! ps -e | grep -q "gdrive"; then 
-    echo "Error: Gdrive not installed or running!"
+    echo "${bold}Error:${normal} Gdrive not installed or running!"
+    echo -ne '\007'
     exit 1
   elif ! gdrive list | grep -q "$gdrivefolderid"; then 
-    echo "Error: Gdrive folder ID ($gdrivefolderid) not found!"
+    echo "${bold}Error:${normal} Gdrive folder ID ($gdrivefolderid) not found!"
+    echo -ne '\007'
     exit 1
   fi
 }
@@ -52,7 +53,8 @@ worldfoldercheck () {
   for item in "${serverWorlds[@]}"
   do
     if [! -d $backupLocation/$item ]; then
-        echo "Error: World folder not found! ($backupLocation/$item)"
+        echo "${bold}Error:${normal} World folder not found! ($backupLocation/$item)"
+        echo -ne '\007'
         exit 1
   done
 }
@@ -61,39 +63,11 @@ willitfit () {
   backupLocationFree=$(stat -c%s "$backupLocation")
   fileToBackupSize=$(stat -c%s "$fileToBackup")
   if [ $fileToBackupSize -gt $backupLocationFree ]; then
-    echo "Error: Not enough free space in $backupLocation!"
+    echo "${bold}Error:${normal} Not enough free space in $backupLocation!"
+    echo -ne '\007'
     exit 1
   fi
 }
-
-if [ ! -d $fileToBackup ]; then
-    echo "Error: Server folder not found! ($fileToBackup)"
-    exit 1
-fi
-
-if [ ! -d $backupLocation ]; then
-    echo "Error: Backup folder not found! ($backupLocation)"
-    exit 1
-fi
-
-if ! ps -e | grep -q "java"; then
-    echo "Warning: $serverName is not running! Continuing without in-game warnings..."
-    serverRunning=false #stopHandling wont be run
-fi
-
-if [ $screens -eq 0 ]; then
-    echo "Error: No screen sessions running!"
-    exit 1
-elif [ $screens -gt 1 ]; then
-    echo "Error: More than 1 screen session is running, am confuse!"
-    exit 1
-fi
-
-if [ $# -gt 1 ]; then
-    echo -e "${bold}Too many arguments!${normal}"
-    echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wu | Compress & upload worlds to gdrive\n-p | Compress plugins only\n-pu | Compress & upload plugins to gdrive"
-    exit 1
-fi
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -127,6 +101,41 @@ done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression/backup script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
 echo "$currentTime Script started on $currentDay..."
+
+if [ ! -d $fileToBackup ]; then
+    echo "${bold}Error:${normal} Server folder not found! ($fileToBackup)"
+    echo -ne '\007'
+    exit 1
+fi
+
+if [ ! -d $backupLocation ]; then
+    echo "${bold}Error:${normal} Backup folder not found! ($backupLocation)"
+    echo -ne '\007'
+    exit 1
+fi
+
+if ! ps -e | grep -q "java"; then
+    echo "${bold}Warning:${normal} $serverName is not running! Continuing without in-game warnings..."
+    echo -ne '\007'
+    serverRunning=false #stopHandling wont be run
+fi
+
+if [ $screens -eq 0 ]; then
+    echo "${bold}Error:${normal} No screen sessions running!"
+    echo -ne '\007'
+    exit 1
+elif [ $screens -gt 1 ]; then
+    echo "${bold}Error:${normal} More than 1 screen session is running, am confuse!"
+    echo -ne '\007'
+    exit 1
+fi
+
+if [ $# -gt 1 ]; then
+    echo -e "${bold}Too many arguments!${normal}"
+    echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wu | Compress & upload worlds to gdrive\n-p | Compress plugins only\n-pu | Compress & upload plugins to gdrive"
+    echo -ne '\007'
+    exit 1
+fi
 
 if ! $restartOnly; then
     willitfit
