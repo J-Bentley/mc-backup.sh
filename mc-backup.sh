@@ -10,8 +10,9 @@ backupLocation="/home/me/Backup"
 serverName="MyServer"
 startScript="bash start.sh"
 serverWorlds=("world" "world_nether" "world_the_end")
-gdrivefolderid="notneededifnotusing"
 graceperiod="1m"
+gdrivefolderid="notneededifnotusing"
+ftpCreds=("user" "password" "ip" "/home/me/backup")
 #----------------------------------
 
 bold=$(tput bold)
@@ -24,10 +25,9 @@ screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
 serverRunning=true
 
 gdriveUpload=false
+ftpUpload=false
 worldsOnly=false
-worldUpload=false
 pluginOnly=false
-pluginUpload=false
 restartOnly=false
 
 stopHandling () {
@@ -39,7 +39,7 @@ stopHandling () {
   screen -p 0 -X stuff "stop$(printf \\r)"
   sleep 5
 }
-gdrivefoldercheck () { # NEEDS TESTING NEEDS TESTING NEEDS TESTING NEEDS TESTING
+gdrivefoldercheck () { # NEEDS TESTING
   if ! ps -e | grep -q "gdrive"; then 
     echo "Error: Gdrive not installed or running!"
     exit 1
@@ -47,11 +47,6 @@ gdrivefoldercheck () { # NEEDS TESTING NEEDS TESTING NEEDS TESTING NEEDS TESTING
     echo "Error: Gdrive folder ID ($gdrivefolderid) not found!"
     exit 1
   fi
-}
-gdriveDelete () {
-  #Deletes contents of gdrive folder before uploading newest compression as gdrive has 15gb limit
-  #gdrive list $gdrivefolderid
-  #gdrive delete contents of $gdrivefolderid but not folder itself
 }
 worldfoldercheck () {
   for item in "${serverWorlds[@]}"
@@ -115,16 +110,9 @@ while [ $# -gt 0 ]; do
       worldfoldercheck
       worldsOnly=true
       ;;
-    -wu|--worldupload)
-      worldfoldercheck
-      gdrivefoldercheck
-      worldUpload=true
-      ;;
     -p|--plugin)
       pluginOnly=true
       ;;
-    -pu|--pluginupload)
-      pluginUpload=true
       ;;
     -r|--restart)
       restartOnly=true
@@ -154,34 +142,17 @@ if $restartOnly; then
     screen -p 0 -X stuff "echo $currentTime $serverName stopped! Restarting $serverName...$(printf \\r)"
 elif $worldsOnly; then
     screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/worlds] to [$backupLocation] on [$currentDay]...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null #starts the tar with files from the void so that multiple files can be looped in from array
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null #starts the tar with files from the void so that multiple files can be looped in from array then gziped
     for item in "${serverWorlds[@]}"
     do
         tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
     done
     gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
     screen -p 0 -X stuff "echo $currentTime Compression complete! Restarting $serverName...$(printf \\r)"
-elif $worldUpload; then
-    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/worlds*] to [$backupLocation] on [$currentDay] then uploading to Gdrive...$(printf \\r)"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null
-    for item in "${serverWorlds[@]}"
-    do
-        tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
-    done
-    gzip $backupLocation/$serverName[WORLDS]-$currentDay.tar
-    screen -p 0 -X stuff "echo $currentTime Compression complete! Uploading to Gdrive... $(printf \\r)"
-    gdrive upload -p $gdrivefolderid $backupLocation/$serverName[WORLDS]-$currentDay.tar
-    screen -p 0 -X stuff "echo $currentTime Upload complete! Restarting $serverName...$(printf \\r)"
 elif $pluginOnly; then
     screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
     tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
     screen -p 0 -X stuff "echo $currentTime Compression complete! Restarting $serverName...$(printf \\r)"
-elif $pluginUpload; then
-    screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/plugins] to [$backupLocation] on [$currentDay]...$(printf \\r)"
-    tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
-    screen -p 0 -X stuff "echo $currentTime Compression complete! Uploading to Gdrive...$(printf \\r)"
-    gdrive upload -p $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz
-    screen -p 0 -X stuff "echo $currentTime Upload complete! Restarting $serverName...$(printf \\r)"
 else
     screen -p 0 -X stuff "echo $currentTime $serverName stopped! Compressing [$fileToBackup/] to [$backupLocation/] on [$currentDay]...$(printf \\r)"
     tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
@@ -192,6 +163,13 @@ if $gdriveUpload; then
     screen -p 0 -X stuff "echo $currentTime Uploading to Gdrive... $(printf \\r)"
     gdrive upload -p $gdrivefolderid $backupLocation/$serverName-$currentDay.tar.gz
     screen -p 0 -X stuff "echo $currentTime Upload complete! Restarting $serverName...$(printf \\r)"
+elif $ftpUpload; then
+    ftp ${ftpCreds[1]}@${ftpCreds[3]}
+    echo ${ftpCreds[2]}
+    cd ${ftpCreds[4]}
+    lcd $backupLocation
+    put $serverName-$currentDay.tar.gz
+    bye
 fi
 
 elapsedTimeEnd="$(date -u +%s)"
