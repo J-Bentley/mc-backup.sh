@@ -10,7 +10,7 @@ Be a man, open the script in a text editor and change these variables at the top
 **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
 **serverWorlds** = An array of the servers world names for worldonly mode. Includes defaults, add any of your custom worlds here to be backed up seperated by a space. (ex: "arena" "lobby")  
 **gdrivefolderid** = The ID of the folder you wish to upload to. Use "gdrive list" and copy/paste the ID here. Doesn't have to be set if not using gdrive mode.  
-**ftpCreds** = For FTP modes. (your username, remote ftp servers ip, password, remote directory)
+**ftpCreds** = For FTP modes. (your username, remote ftp servers ip, password, remote directory)  
 **gracePeriod** = The time to wait between in-game warnings. (Remove m for seconds)  
 
 Might require: ``sudo chmod +x mc-backup.sh``  
