@@ -1,6 +1,6 @@
 #!/bin/bash
 :'
-MC-BACKUP version 3.0 
+MC-BACKUP version 4.0 
 by Arcaniist 2018-12-15
 https://github.com/J-Bentley/mc-backup.sh
 
@@ -9,8 +9,8 @@ fileToBackup="/home/me/MinecraftServer"
 backupLocation="/home/me/Backup"
 serverName="MyServer"
 startScript="bash start.sh"
-serverWorlds=("world" "world_nether" "world_the_end")
 graceperiod="1m"
+serverWorlds=("world" "world_nether" "world_the_end")
 gdrivefolderid="notneededifnotusing"
 ftpCreds=("user" "password" "ip" "/home/me/backup")
 #----------------------------------
