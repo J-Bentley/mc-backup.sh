@@ -16,7 +16,7 @@ Might require: ``sudo chmod +x mc-backup.sh``
 
 Has useful output to STDOUT and to the running screen session for manual execution but best when [automated with crontab](https://www.liquidweb.com/kb/create-a-cron-task-in-ubuntu-16-04/).
 
-``bash mc-backup.sh [-h , -r , -w , -p, -g, -f] ``
+``bash mc-backup.sh [-h , -r , -w , -p] ``
 
 - **No args:** Compresses entire server directory to backup location, does not upload to Gdrive.  
 
