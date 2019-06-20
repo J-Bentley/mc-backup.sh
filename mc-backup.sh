@@ -3,6 +3,7 @@
 MC-BACKUP version 4.0 
 by Arcaniist 2018-12-15
 https://github.com/J-Bentley/mc-backup.sh '
+
 fileToBackup="/home/me/mcserver"
 backupLocation="/home/me/mcbackup"
 serverName="My Server"
