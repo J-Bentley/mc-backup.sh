@@ -33,6 +33,5 @@ Has useful output to STDOUT and to the running screen session for manual executi
 
 ## TODO
 - Time stamps
-- Tee echos to log file
 - SMS sent upon success via twilio
 - Crontab tutorial of some sort
