@@ -2,7 +2,7 @@
 A BASH script to automate restarting & local backups up of a Spigot/Paper/Minecraft server. Injects commands into an already running Screen session to issue in-game warnings to players, gracefully stop the server, then compress the server directory or just plugin or world folders to a local backup directory.
 
 ## Setup    
-Be a man, open the script in a text editor and change these variables at the top:  
+Open the script in a text editor and change these variables at the top:  
 
 - **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 
