@@ -28,7 +28,7 @@ Has useful output to STDOUT and to the running screen session for manual executi
 
 ## UPDATES
 - v5
-	- Removed external gdrive & ftp modes, this script is simply for crontabbing local backups and restarts
+	- Removed external gdrive & ftp modes, this script is simply for crontabbing local backups and restarts (might change this)
 	- Removed echos to screen session, only echos to console/log--cleanly
 
 ## TODO
