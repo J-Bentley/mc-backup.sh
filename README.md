@@ -4,11 +4,15 @@ A BASH script to automate restarting & local backups up of a Spigot/Paper/Minecr
 ## Setup    
 Be a man, open the script in a text editor and change these variables at the top:  
 
-**fileToBackup** = Your root server directory. *(dont include closing "/")*  
-**backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
-**serverName** = The name of your server.  
-**startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
-**serverWorlds** = An array of the servers world names for worldonly mode. Includes defaults, add any of your custom worlds here to be backed up seperated by a space. (ex: "arena" "lobby" "creative")  
+- **fileToBackup** = Your root server directory. *(dont include closing "/")*  
+
+- **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
+
+- **serverName** = The name of your server.  
+
+- **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
+
+- **serverWorlds** = An array of the servers world names for worldonly mode. Includes defaults, add any of your custom worlds here to be backed up seperated by a space. (ex: "arena" "lobby" "creative")  
 
 Might require: ``sudo chmod +x mc-backup.sh``  
 
