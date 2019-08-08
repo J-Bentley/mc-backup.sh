@@ -25,7 +25,6 @@ log () {
     #echo and append stdout to file
     builtin echo -e "$@" | tee -a mc-backup_log.txt
 }
-
 stopHandling () {
     echo -e "Warning players & stopping $serverName ...\n"
     screen -p 0 -X stuff "say $serverName is restarting in $graceperiod!$(printf \\r)"
@@ -83,7 +82,6 @@ do
 done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
-
 
 if [ ! -d $fileToBackup ]; then
     echo "${bold}Error:${normal} Server folder not found! ($fileToBackup)"
