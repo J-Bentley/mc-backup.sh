@@ -42,7 +42,7 @@ worldfoldercheck () {
         if [! -d $backupLocation/$item ]; then
             echo "${bold}Error:${normal} World folder not found! ($backupLocation/$item)"
             exit 1
-	    fi
+	fi
     done
 }
 willitfit () {
