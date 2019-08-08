@@ -35,11 +35,11 @@ worldfoldercheck () {
   #checks the server file for the world files in serverWorlds
   for item in "${serverWorlds[@]}"
   do
-    if [! -d $backupLocation/$item ]; then
-        echo "${bold}Error:${normal} World folder not found! ($backupLocation/$item)"
-        echo -ne '\007'
-        exit 1
-	fi
+      if [! -d $backupLocation/$item ]; then
+          echo "${bold}Error:${normal} World folder not found! ($backupLocation/$item)"
+          echo -ne '\007'
+          exit 1
+      fi
   done
 }
 willitfit () {
@@ -47,9 +47,9 @@ willitfit () {
   backupLocationFree=$(stat -c%s "$backupLocation")
   fileToBackupSize=$(stat -c%s "$fileToBackup")
   if [ $fileToBackupSize -gt $backupLocationFree ]; then
-    echo "${bold}Error:${normal} Not enough free space in $backupLocation!"
-    echo -ne '\007'
-    exit 1
+      echo "${bold}Error:${normal} Not enough free space in $backupLocation!"
+      echo -ne '\007'
+      exit 1
   fi
 }
 
@@ -96,7 +96,6 @@ if ! ps -e | grep -q "java"; then
     echo "${bold}Warning:${normal} $serverName is not running! Continuing without in-game warnings..."
     echo -ne '\007'
     serverRunning=false
-	#stopHandling wont be run if java isnt running
 fi
 
 if [ $screens -eq 0 ]; then
@@ -127,11 +126,12 @@ fi
 elapsedTimeStart="$(date -u +%s)"
 
 if $restartOnly; then
-	echo -e "Restart only on [$currentDay] ...\n"
+    echo -e "Restart only on [$currentDay] ...\n"
 elif $worldsOnly; then
     echo -e "Worlds only started on [$currentDay] ...\n"
-    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null #starts the tar with files from the void so that multiple files can be looped in from array then gziped
-	for item in "${serverWorlds[@]}"
+    tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null
+    #starts the tar with files from the void so that multiple files can be looped in from array then gziped
+    for item in "${serverWorlds[@]}"
     do
         tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
     done
@@ -140,8 +140,8 @@ elif $pluginOnly; then
     echo -e "Plugins only started on [$currentDay] ...\n"
     tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
 else
-	echo -e "Full compression started on [$currentDay] ...\n"
-	tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
+    echo -e "Full compression started on [$currentDay] ...\n"
+    tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
 fi
 
 elapsedTimeEnd="$(date -u +%s)"
@@ -155,9 +155,9 @@ fi
 if $restartOnly; then
     echo "$serverName restarted in $((elapsed/60)) minute(s)!"
 elif $worldsOnly; then
-	echo "Worlds compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
+    echo "Worlds compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
 elif $pluginOnly; then
-	echo "Plugins compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
+    echo "Plugins compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
 else
     compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
