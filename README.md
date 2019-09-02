@@ -18,7 +18,7 @@ Might require: ``sudo chmod +x mc-backup.sh``
 
 ## Usage  
 
-Has useful output to STDOUT and to the running screen session for manual execution but best when [automated with crontab](https://www.liquidweb.com/kb/create-a-cron-task-in-ubuntu-16-04/).
+Spits out useful info to STDOUT and log file in running dir for manual execution but best when [automated with crontab](https://www.liquidweb.com/kb/create-a-cron-task-in-ubuntu-16-04/).
 
 ``bash mc-backup.sh [-h , -r , -w , -p] ``
 
@@ -31,11 +31,14 @@ Has useful output to STDOUT and to the running screen session for manual executi
 - **-p | plugins:** Compresses plugin directory only to backup location.    
 
 ## UPDATES
+- v6
+	- Added check to determine if there is enough space on disk partition for 1 backup at start of script. 
 - v5
-	- Removed external gdrive & ftp modes, this script is simply for crontabbing local backups and restarts (might change this)
-	- Removed echos to screen session, only echos to console/log--cleanly
+	- Removed external gdrive & ftp modes, this script is simply for crontabbing local backups and restarts.
+	- Removed echos to screen session, only echos to console/log -- cleanly now!
+
 
 ## TODO
-- Time stamps
+- Time stamps on log entries
 - SMS sent upon success via twilio
 - Crontab tutorial of some sort
