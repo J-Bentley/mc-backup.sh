@@ -1,12 +1,10 @@
 #!/bin/bash
-:'
-MC-BACKUP version 4.0 
-by Arcaniist 2018-12-15
+: '
+MC-BACKUP by Arcaniist 2018-12-15
 https://github.com/J-Bentley/mc-backup.sh '
-
-fileToBackup="/home/me/mcserver"
-backupLocation="/home/me/mcbackup"
-serverName="My Server"
+fileToBackup="/home/me/minecraftserver"
+backupLocation="/home/me/backup"
+serverName="MyServer"
 startScript="bash start.sh"
 graceperiod="1m"
 serverWorlds=("world" "world_nether" "world_the_end")
@@ -25,6 +23,7 @@ log () {
     #echo and append stdout to file
     builtin echo -e "$@" | tee -a mc-backup_log.txt
 }
+
 stopHandling () {
     echo -e "Warning players & stopping $serverName ...\n"
     screen -p 0 -X stuff "say $serverName is restarting in $graceperiod!$(printf \\r)"
@@ -42,7 +41,7 @@ worldfoldercheck () {
         if [! -d $backupLocation/$item ]; then
             echo "${bold}Error:${normal} World folder not found! ($backupLocation/$item)"
             exit 1
-	fi
+	    fi
     done
 }
 willitfit () {
@@ -83,6 +82,7 @@ done
 
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
 
+
 if [ ! -d $fileToBackup ]; then
     echo "${bold}Error:${normal} Server folder not found! ($fileToBackup)"
     exit 1
@@ -96,7 +96,7 @@ fi
 if ! ps -e | grep -q "java"; then
     echo "${bold}Warning:${normal} $serverName is not running! Continuing without in-game warnings..."
     serverRunning=false
-	  #wont issue in-game warnings if java isnt detected running
+	#wont issue in-game warnings if java isnt detected running
 fi
 
 if [ $screens -eq 0 ]; then
@@ -124,12 +124,12 @@ fi
 elapsedTimeStart="$(date -u +%s)"
 
 if $restartOnly; then
-	  log "\nRestart only on [$currentDay] ...\n"
+	log "\nRestart only on [$currentDay] ...\n"
 elif $worldsOnly; then
     log "\nWorlds only started on [$currentDay] ...\n"
-	  #starts the tar with files from the void so that multiple files can be looped in from array then gziped
+	#starts the tar with files from the void so that multiple files can be looped in from array then gziped
     tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null 
-	  for item in "${serverWorlds[@]}"
+	for item in "${serverWorlds[@]}"
     do
         tar rf $backupLocation/$serverName[WORLDS]-$currentDay.tar "$fileToBackup/$item"
     done
@@ -138,8 +138,8 @@ elif $pluginOnly; then
     log "\nPlugins only started on [$currentDay] ...\n"
     tar -czPf $backupLocation/$serverName[PLUGINS]-$currentDay.tar.gz $fileToBackup/plugins
 else
-	  log "\nFull compression started on [$currentDay] ...\n"
-	  tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
+	log "\nFull compression started on [$currentDay] ...\n"
+	tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
 fi
 
 elapsedTimeEnd="$(date -u +%s)"
@@ -153,9 +153,9 @@ fi
 if $restartOnly; then
     log "$serverName restarted in $((elapsed/60)) minute(s)!"
 elif $worldsOnly; then
-	  log "Worlds compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
+	log "Worlds compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
 elif $pluginOnly; then
-	  log "Plugins compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
+	log "Plugins compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
 else
     compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
