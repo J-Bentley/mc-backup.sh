@@ -33,6 +33,7 @@ Spits out useful info to STDOUT and log file in running dir for manual execution
 ## UPDATES
 - v6
 	- Added check to determine if there is enough space on disk partition for 1 backup at start of script. 
+	- All errors are logged to text file so if you crontab you will see if/why the script didn't complete.
 - v5
 	- Removed external gdrive & ftp modes, this script is simply for crontabbing local backups and restarts.
 	- Removed echos to screen session, only echos to console/log -- cleanly now!
