@@ -1,6 +1,7 @@
 #!/bin/bash
 : '
-MC-BACKUP by Arcaniist 2018-12-15
+MC-BACKUP version 6.0
+by Arcaniist 2018-12-15
 https://github.com/J-Bentley/mc-backup.sh '
 fileToBackup="/home/me/minecraftserver"
 backupLocation="/home/me/backup"
@@ -20,10 +21,9 @@ pluginOnly=false
 restartOnly=false
 
 log () {
-    #echo and append stdout to file
+    # echos text and appends to log file at same time
     builtin echo -e "$@" | tee -a mc-backup_log.txt
 }
-
 stopHandling () {
     echo -e "Warning players & stopping $serverName ...\n"
     screen -p 0 -X stuff "say $serverName is restarting in $graceperiod!$(printf \\r)"
@@ -35,25 +35,24 @@ stopHandling () {
     sleep 5
 }
 worldfoldercheck () {
-    #checks the server dir for the world files in serverWorlds via iteration
+    # Checks to make sure all the worlds defined in serverWorlds array exist as directories
     for item in "${serverWorlds[@]}"
     do
         if [! -d $backupLocation/$item ]; then
-            echo "${bold}Error:${normal} World folder not found! ($backupLocation/$item)"
+            log "${bold}Error:${normal} World folder not found! ($backupLocation/$item)\n"
             exit 1
 	    fi
     done
 }
 willitfit () {
-    #makes a judgment based off the UNCOMPRESSED server folder size if it will fit in backupLocation
-    backupLocationFree=$(stat -c%s "$backupLocation")
-    fileToBackupSize=$(stat -c%s "$fileToBackup")
-    if [ $fileToBackupSize -gt $backupLocationFree ]; then
-        echo "${bold}Error:${normal} Not enough free space in $backupLocation!"
+    freespace=$(df -k --output=avail "$PWD" | tail -n1) # Get current partition available in kb
+    fileToBackupsize=$(du -s "$fileToBackup" | cut -f1) # Get server folder size in kb -- ** INNACURATE when in plugin/world only mode but still a good metric **
+    if [[ freespace <= fileToBackupsize ]]; then
+        log "${bold}Error:${normal} Not enough space on disk! (Free:$freespace File:$fileToBackupsize)\n"
         exit 1
-    fi
 }
 
+# Check first argument only, doesn't support multiple args/modes
 while [ $# -gt 0 ];
 do
     case "$1" in
@@ -73,42 +72,42 @@ do
         restartOnly=true
         ;;
       *)
-      echo -e "${bold}Invalid argument: ${normal}"$1 
+      log -e "${bold}Error:${normal} Invalid argument: ${1}\n" 
       echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-g | Compress & upload $serverName's root dir to gdrive\n-wu | Compress & upload worlds to gdrive\n-p | Compress plugins only\n-pu | Compress & upload plugins to gdrive"      exit 1
       ;;
     esac
     shift
 done
 
+# Title, description and credits :)
 echo -e "\n${bold}MC-BACKUP by Arcaniist${normal}\n---------------------------\nA compression script of\n[$fileToBackup] to [$backupLocation] for $serverName!\n"
 
-
 if [ ! -d $fileToBackup ]; then
-    echo "${bold}Error:${normal} Server folder not found! ($fileToBackup)"
+    log "${bold}Error:${normal} Server folder not found! ($fileToBackup)\n"
     exit 1
 fi
 
 if [ ! -d $backupLocation ]; then
-    echo "${bold}Error:${normal} Backup folder not found! ($backupLocation)"
+    log "${bold}Error:${normal} Backup folder not found! ($backupLocation)\n"
     exit 1
 fi
 
+# Reports server isn't running if JAVA process isn't detected
 if ! ps -e | grep -q "java"; then
-    echo "${bold}Warning:${normal} $serverName is not running! Continuing without in-game warnings..."
+    log "${bold}Warning:${normal} $serverName is not running! Continuing without in-game warnings ... \n"
     serverRunning=false
-	#wont issue in-game warnings if java isnt detected running
 fi
 
 if [ $screens -eq 0 ]; then
-    echo "${bold}Error:${normal} No screen sessions running!"
+    log "${bold}Error:${normal} No screen sessions running!\n"
     exit 1
 elif [ $screens -gt 1 ]; then
-    echo "${bold}Error:${normal} More than 1 screen session is running, am confuse!"
+    log "${bold}Error:${normal} More than 1 screen session is running, am confuse!\n"
     exit 1
 fi
 
 if [ $# -gt 1 ]; then
-    echo -e "${bold}Too many arguments!${normal}"
+    log -e "${bold}Error:${normal} Too many arguments!\n"
     echo -e "Usage:\nNo args | Compress $serverName's root dir\n-h | Help (this)\n-w | Compress worlds only\n-r | Restart with warnings, no backups made.\n-p | Compress plugins only\n"
     exit 1
 fi
@@ -117,17 +116,19 @@ if ! $restartOnly; then
     willitfit
 fi
 
+# Wont execute stophandling if server is offline upon script start
 if $serverRunning; then
     stopHandling
 fi
 
+# Grabs date in seconds *BEFORE* compressing
 elapsedTimeStart="$(date -u +%s)"
 
 if $restartOnly; then
 	log "\nRestart only on [$currentDay] ...\n"
 elif $worldsOnly; then
     log "\nWorlds only started on [$currentDay] ...\n"
-	#starts the tar with files from the void so that multiple files can be looped in from array then gziped
+	# Starts the tar with files from the void so that multiple files can be looped in from array then gziped
     tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null 
 	for item in "${serverWorlds[@]}"
     do
@@ -142,22 +143,25 @@ else
 	tar -czPf $backupLocation/$serverName-$currentDay.tar.gz $fileToBackup
 fi
 
+# Grabs date in seconds *AFTER* compression then does math to find time it took to compress
 elapsedTimeEnd="$(date -u +%s)"
 elapsed="$(($elapsedTimeEnd-$elapsedTimeStart))"
 
+# Size of entire backup directory in kb, assumes file backed up is the only thing in backup directory -- ***** caveat *****
+compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
+
+# Will restart server if it was online upon script start OR if in restartonly mode regardless of server state at script launch -- therefore WONT restart server if offline upon script launch
 if $serverRunning || $restartOnly; then
     screen -p 0 -X stuff "$startScript $(printf \\r)"
-    #wont restart server if it was offline upon script start or in restartonly mode--this could be a caveat
 fi
 
 if $restartOnly; then
-    log "$serverName restarted in $((elapsed/60)) minute(s)!"
+    log "$serverName restarted in $((elapsed/60)) minute(s)!\n"
 elif $worldsOnly; then
-	log "Worlds compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
+	log "WORLDS compressed ($compressedSize) & $serverName restarted in $((elapsed/60)) minute(s)!\n"
 elif $pluginOnly; then
-	log "Plugins compressed & $serverName restarted in $((elapsed/60)) minute(s)!"
+	log "PLUGINS compressed ($compressedSize) & $serverName restarted in $((elapsed/60)) minute(s)!\n"
 else
-    compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3)
     log "[$fileToBackup] ($uncompressedSize) compressed to [$backupLocation] ($compressedSize) in $((elapsed/60)) minutes!\n"
 fi
