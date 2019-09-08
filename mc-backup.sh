@@ -3,6 +3,7 @@
 MC-BACKUP version 6.0
 by Arcaniist 2018-12-15
 https://github.com/J-Bentley/mc-backup.sh '
+
 fileToBackup="/home/me/minecraftserver"
 backupLocation="/home/me/backup"
 serverName="MyServer"
