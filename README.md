@@ -2,7 +2,7 @@
 A BASH script to automate restarting & local backups up of a Spigot/Paper/Minecraft server. Injects commands into an already running Screen session to issue in-game warnings to players, gracefully stops the server, then compresses the server directory or just plugin or world folders to a local backup directory before restarting the server gracefully.
 
 ## Setup    
-Open the script in any text editor and change these variables at the top:  
+* Open the script in any text editor and change these variables at the top:  
 
 - **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 
@@ -22,11 +22,11 @@ Spits out useful info to STDOUT and log file in running dir for manual execution
 
 ``bash mc-backup.sh [-h , -r , -w , -p] ``
 
-- **No args:** Compresses entire server directory to backup location, does not upload to Gdrive.  
+- **No args:** Compresses entire server directory to backup location.  
 
-- **-r | Restart:** Issues warnings to players, saves & restarts server with no backup made.  
+- **-r | Restart:** Saves & restarts server with no backup made.  
 
-- **-w | Worlds:** Compresses world directories only  to backup location.   
+- **-w | Worlds:** Compresses world directories only to backup location.   
 
 - **-p | plugins:** Compresses plugin directory only to backup location.    
 
@@ -35,11 +35,11 @@ Spits out useful info to STDOUT and log file in running dir for manual execution
 	- Added check to determine if there is enough space on disk partition for 1 backup at start of script. 
 	- All errors are logged to text file so if you crontab you will see if/why the script didn't complete.
 - v5
-	- Removed external gdrive & ftp modes, this script is simply for crontabbing local backups and restarts.
-	- Removed echos to screen session, only echos to console/log -- cleanly now!
-
+	- Removed external gdrive.
+	- Removed echos to screen session, only STDOUT/ERR to console & log.
 
 ## TODO
 - Time stamps on log entries
 - SMS sent upon success via twilio
-- Crontab tutorial of some sort
+- ftp to server set in an array
+- plugin configuration files only mode
