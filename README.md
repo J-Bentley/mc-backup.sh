@@ -1,5 +1,5 @@
 ## What is it?
-A BASH script to automate restarting & local backups up of a Spigot/Paper/Bukkit/Minecraft server. Injects commands into an already running Screen session to issue in-game warnings to players, gracefully saves and stops the server, compresses required server directories to a local backup directory then restarts the server.
+A BASH script to automate restarting & local backups up of a Spigot/Paper/Bukkit/Minecraft server. Injects commands into an already running Screen session to issue in-game warnings to players, gracefully saves and stops the server, compresses required server directories to a local backup directory then restarts the Minecraft server.
 
 ## Setup    
 Open the script in any text editor and change these variables at the top:  
