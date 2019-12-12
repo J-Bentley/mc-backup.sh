@@ -14,7 +14,7 @@ serverWorlds=("world" "world_nether" "world_the_end")
 bold=$(tput bold)
 normal=$(tput sgr0)
 currentDay=$(date +"%Y-%m-%d")
-screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
+screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0) #screen stores a .txt per session, finds how many.
 serverRunning=true
 
 worldsOnly=false
@@ -22,7 +22,7 @@ pluginOnly=false
 restartOnly=false
 
 log () {
-    # echos text and appends to log file at same time
+    # echos text paseed to function and appends to log file at same time
     builtin echo -e "$@" | tee -a mc-backup_log.txt
 }
 stopHandling () {
@@ -113,11 +113,12 @@ if [ $# -gt 1 ]; then
     exit 1
 fi
 
+# Won't check if a backup would fit on disk if in restart only
 if ! $restartOnly; then
     willitfit
 fi
 
-# Wont execute stophandling if server is offline upon script start
+# Won't execute stophandling if server is offline upon script start
 if $serverRunning; then
     stopHandling
 fi
