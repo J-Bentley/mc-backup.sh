@@ -33,17 +33,15 @@ Can be manually executed with STDOUT and log file describing progress but best w
 - **-p | plugins:** Compresses plugin directory only to backup location.    
 
 ## UPDATES
+- v6.1
+	- PLugincConfig only mode added, like plugin mode but excludes the .jars
 - v6
 	- Added check to determine if there is enough space for 1 backup at start of script. 
 	- All errors are saved to log file.
-- v5
-	- Removed external gdrive.
-	- Removed echos to screen session, only STDOUT/ERR to console & log.
 
 ## TODO
-- Plugin configuration mode!
 - Time stamps on log entries
 - SMS sent upon success via twilio
-- ftp to server set in an array
-- plugin configuration files only mode
-- Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) ????
+- ftp compressed files to a backup server w/ creds defined in array  
+
+- FIX: Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) ????
