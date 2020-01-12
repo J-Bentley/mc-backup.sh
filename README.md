@@ -44,4 +44,7 @@ Can be manually executed with STDOUT and log file describing progress but best w
 - SMS sent upon success via twilio
 - ftp compressed files to a backup server w/ creds defined in array  
 
-- FIX: Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) ????
+## CAVEATS
+- 1 arg at a time bois
+- wilitfit function checks to see if whole server will fit in backup location regardless of mode.
+- Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) ???? idk
