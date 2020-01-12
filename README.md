@@ -37,7 +37,7 @@ Can be manually executed with STDOUT and log file describing progress but best w
 	- PLugincConfig only mode added, like plugin mode but excludes the .jars
 - v6
 	- Added check to determine if there is enough space for 1 backup at start of script. 
-	- All errors are saved to log file.
+	- Most output saved to log file.
 
 ## TODO
 - Time stamps on log entries
