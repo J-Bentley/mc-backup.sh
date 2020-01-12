@@ -41,6 +41,7 @@ Can be manually executed with STDOUT and log file describing progress but best w
 	- Removed echos to screen session, only STDOUT/ERR to console & log.
 
 ## TODO
+- Plugin configuration mode!
 - Time stamps on log entries
 - SMS sent upon success via twilio
 - ftp to server set in an array
