@@ -47,7 +47,7 @@ willitfit () {
     # Checks if the free space is less than server size and stops if so
     freespace=$(df -k --output=avail "$PWD" | tail -n1) # Get free space of current partition in kb
     fileToBackupsize=$(du -s "$fileToBackup" | cut -f1) # Get server folder size in kb 
-    if [[ freespace <= fileToBackupsize ]]; then
+    if [[ $freespace <= $fileToBackupsize ]]; then
         log "Error: Not enough space on disk! (Free:$freespace Needed:$fileToBackupsize)\n"
         exit 1
 }
