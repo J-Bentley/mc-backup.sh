@@ -1,7 +1,7 @@
 ## What is it?
 A BASH script to automate restarting & local backups up of a Spigot/Paper/Bukkit/Minecraft server. Injects commands into an already running Screen session to issue in-game warnings to players, gracefully saves and stops the server, compresses required server directories to a local backup directory then restarts the Minecraft server.
 
-## Setup    
+## Setup (REQUIRED)    
 Open the script in any text editor and change these variables at the top:  
 
 - **fileToBackup** = Your root server directory. *(dont include closing "/")*  
@@ -20,7 +20,7 @@ Might require: ``sudo chmod +x mc-backup.sh``
 
 Can be manually executed with STDOUT and log file describing progress but best when [automated with crontab](https://www.liquidweb.com/kb/create-a-cron-task-in-ubuntu-16-04/).
 
-``bash mc-backup.sh [-h , -r , -w , -p] ``
+``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
 
 - **No args:** Compresses entire server directory to backup location.  
 
@@ -32,12 +32,11 @@ Can be manually executed with STDOUT and log file describing progress but best w
 
 - **-p | plugins:** Compresses plugin directory only to backup location.    
 
+- **-pc | pluginconfig:** Compresses plugin configuration directories only to backup location and ignores jars.  
+
 ## UPDATES
-- v6.1
-	- PLugincConfig only mode added, like plugin mode but excludes the .jars
-- v6
-	- Added check to determine if there is enough space for 1 backup at start of script. 
-	- Most output saved to log file.
+- v6.2
+	- All files in root Backup directory deleted at start of script so only 1 backup is kept at a time. Create a new subfolder for 		it to put it in an existing backup directory.
 
 ## TODO
 - Time stamps on log entries
@@ -46,5 +45,4 @@ Can be manually executed with STDOUT and log file describing progress but best w
 
 ## CAVEATS
 - 1 arg at a time bois
-- wilitfit function checks to see if whole server will fit in backup location regardless of mode.
 - Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) ???? idk
