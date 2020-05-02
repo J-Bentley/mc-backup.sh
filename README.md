@@ -14,17 +14,13 @@ Open the script in a text editor and change these variables at the top:
 
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
-- Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id> if needed.`` 
-
-- Ensure only 1 screen session is running!
+- Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id>`` if needed. 
 
 ## Usage  
 
-Can be manually executed with STDOUT and log file describing progress but best when [automated with crontab](https://www.liquidweb.com/kb/create-a-cron-task-in-ubuntu-16-04/).
-
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
 
-- **No args:** Compresses entire server directory to backup location.  
+- **No args:** Gracefully stops the server if its running, compresses entire server directory to backup location and restarts server.  
 
 - **-h | help:** Shows arguments/modes available.   
 
