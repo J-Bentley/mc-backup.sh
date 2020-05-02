@@ -1,8 +1,8 @@
 ## What is it?
-A BASH script to automate restarting & local backups up of a Spigot/Paper/Bukkit/Minecraft server. Injects commands into an already running Screen session to issue in-game warnings to players, gracefully saves and stops the server, compresses required server directories to a local backup directory then restarts the Minecraft server.
+A BASH script to automate graceful restarting & local backups of a Spigot/Paper/Bukkit/Minecraft server running on Ubuntu in a Screen session.
 
 ## Setup (REQUIRED)    
-Open the script in any text editor and change these variables at the top:  
+Open the script in a text editor and change these variables at the top:  
 
 - **fileToBackup** = Your root server directory. *(dont include closing "/")*  
 
@@ -14,7 +14,9 @@ Open the script in any text editor and change these variables at the top:
 
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
-Might require: ``sudo chmod +x mc-backup.sh``  
+- Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id> if needed.`` 
+
+- Ensure only 1 screen session is running!
 
 ## Usage  
 
@@ -28,21 +30,14 @@ Can be manually executed with STDOUT and log file describing progress but best w
 
 - **-r | Restart:** Saves & restarts server with no backup made.  
 
-- **-w | Worlds:** Compresses world directories only to backup location.   
+- **-w | Worlds:** Gracefully stops the server if its running, compresses world directories only to backup location and restarts server.   
 
-- **-p | plugins:** Compresses plugin directory only to backup location.    
+- **-p | plugins:** Gracefully stops the server if its running, compresses plugin directory only to backup location and restarts server   
 
-- **-pc | pluginconfig:** Compresses plugin configuration directories only to backup location and ignores jars.  
-
-## UPDATES
-- v6.2
-	- All files in root Backup directory deleted at start of script so only 1 backup is kept at a time. Create a new subfolder for 		it to put it in an existing backup directory.
-
-## TODO
-- Time stamps on log entries
-- SMS sent upon success via twilio
-- ftp compressed files to a backup server w/ creds defined in array  
+- **-pc | pluginconfig:** Gracefully stops the server if its running, compresses plugin config directories only to backup location and restarts server. Ignores plugin .jars.  
 
 ## CAVEATS
-- 1 arg at a time bois
-- Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) ???? idk
+- Only 1 or no arg can be called at a time
+- only 1 screen session can be running on the system
+- No way to disable auto restart of the server after compression correctly.
+- Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) 
