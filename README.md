@@ -14,7 +14,7 @@ Open the script in a text editor and change these variables at the top:
 
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
-- Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls`` 
+- Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``. 
 
 ## Usage  
 
@@ -27,13 +27,12 @@ Open the script in a text editor and change these variables at the top:
 - **-r | Restart:** Saves & restarts server with no backup made.  
 
 - **-w | Worlds:** Gracefully stops the server if its running, compresses world directories only to backup location and restarts server.   
-
-- **-p | plugins:** Gracefully stops the server if its running, compresses plugin directory only to backup location and restarts server   
+- **-p | plugins:** Gracefully stops the server if its running, compresses plugin directory only to backup location and restarts server 
 
 - **-pc | pluginconfig:** Gracefully stops the server if its running, compresses plugin config directories only to backup location and restarts server. Ignores plugin .jars.  
 
 ## CAVEATS
-- Only 1 or no arg can be called at a time
-- only 1 screen session can be running on the system
-- No way to disable auto restart of the server after compression correctly.
+- Only 1 or no arg can be called at a time.
+- only 1 screen session can be running on the system.
+- No way to disable auto restart of the server after compression correctly. (ex: -o flag to ensure it doesnt start again?)
 - Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) 
