@@ -27,7 +27,7 @@ Open the script in a text editor and change these variables at the top:
 - **-r | Restart:** Saves & restarts server with no backup made.  
 
 - **-w | Worlds:** Gracefully stops the server if its running, compresses world directories only to backup location and restarts server.   
-- **-p | plugins:** Gracefully stops the server if its running, compresses plugin directory only to backup location and restarts server 
+- **-p | plugins:** Gracefully stops the server if its running, compresses plugin directory only to backup location and restarts server. Includes plugin .jars. 
 
 - **-pc | pluginconfig:** Gracefully stops the server if its running, compresses plugin config directories only to backup location and restarts server. Ignores plugin .jars.  
 
