@@ -31,8 +31,16 @@ Open the script in a text editor and change these variables at the top:
 
 - **-pc | pluginconfig:** Gracefully stops the server if its running, compresses plugin config directories only to backup location and restarts server. Ignores plugin .jars.  
 
+Best when automated with (Crontab)[https://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/].  
+
+Crontab examples:
+- Gracefully restart server without backup every 12 hours:
+- Backup just world files every day:
+- Backup just plugin config files every week:
+- Full server backup every week:
+
 ## CAVEATS
 - Only 1 or no arg can be called at a time.
 - only 1 screen session can be running on the system.
-- No way to disable auto restart of the server after compression correctly. (ex: -o flag to ensure it doesnt start again?)
-- Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) 
+- No way to disable auto restart of the server after compression correctly. 
+- TO FIX: Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) 
