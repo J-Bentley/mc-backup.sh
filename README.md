@@ -31,8 +31,7 @@ Open the script in a text editor and change these variables at the top:
 
 - **-pc | pluginconfig:** Gracefully stops the server if its running, compresses plugin config directories only to backup location and restarts server. Ignores plugin .jars.  
 
-Best when automated with [Crontab](https://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/).  
-
+**Best when automated with [Crontab](https://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/).**  
 Crontab examples:
 - Gracefully restart server without backup every 12 hours:
 - Backup just world files every day:
