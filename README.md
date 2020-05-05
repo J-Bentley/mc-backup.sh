@@ -1,7 +1,7 @@
 ## What is it?
 A BASH script to automate graceful restarting & local backups of a Spigot/Paper/Bukkit/Minecraft server running on Ubuntu in a Screen session.
 
-## Setup (REQUIRED)    
+## Setup   
 Open the script in a text editor and change these variables at the top:  
 
 - **fileToBackup** = Your root server directory. *(dont include closing "/")*  
