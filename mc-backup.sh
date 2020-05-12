@@ -52,7 +52,7 @@ deletebackup () {
 	fi
 }
 
-# USER INPUT: checks first arg only!
+# USER INPUT
 while [ $# -gt 0 ];
 do
     case "$1" in
@@ -81,6 +81,7 @@ do
     shift
 done
 
+# ERROR HANDLING
 if [ $# -gt 1 ]; then
     log -e "[$currentDay] Error: Too many arguments!\n"
     exit 1
@@ -123,6 +124,7 @@ fi
 # Grabs date in seconds BEFORE compression begins
 elapsedTimeStart="$(date -u +%s)"
 
+# LOGIC HANDLING
 if $restartOnly; then
 	log "[$currentDay] Restart only started ...\n"
 elif $worldsOnly; then
