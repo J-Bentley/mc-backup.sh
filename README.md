@@ -33,10 +33,10 @@ Open the script in a text editor and change these variables at the top:
 
 **Best when automated with [Crontab](https://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/).**  
 Crontab examples:
-- Gracefully restart server without backup every 12 hours:
-- Backup just world files every day:
-- Backup just plugin config files every week:
-- Full server backup every week:
+- Gracefully restart server without backup every day at midnight: ```00 24 * * * bash /home/me/mc-backup.sh -r```
+- Backup just world files every other day at midnight: ```00 24 * * 1,3,5 bash /home/me/mc-backup.sh -w```
+- Backup just plugin config files every friday: ```00 24 * * 6 bash /home/me/mc-backup.sh -pc```
+- Full server backup every monday at 8 AM: ```00 8 * * 1 bash /home/me/mc-backup.sh```
 
 ## CAVEATS
 - Only 1 or no arg can be called at a time.
