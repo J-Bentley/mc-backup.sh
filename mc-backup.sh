@@ -45,9 +45,9 @@ worldfoldercheck () {
     done
 }
 deletebackup () {
-    # Checks if anything is in backup dir, improperly named: no longer deletes backup dir contents
     if [ "$(ls -A $backupLocation)" ]; then
-		log "[$currentDay] Error: Backup directory not empty!\n"
+		log "[$currentDay] Warning: Backup directory not empty! Deleting contents before proceeding ...\n"
+                rm -R $backupLocation
 		exit 1
 	fi
 }
