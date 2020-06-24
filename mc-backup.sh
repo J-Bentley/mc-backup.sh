@@ -71,7 +71,7 @@ do
       -r|--restart)
         restartOnly=true
         ;;
-	  -pc|--pluginconfig)
+      -pc|--pluginconfig)
         pluginconfigOnly=true
         ;;
       *)
