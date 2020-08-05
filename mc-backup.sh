@@ -4,9 +4,9 @@ MC-BACKUP
 https://github.com/J-Bentley/mc-backup.sh 
 Change the below variables to your liking!!'
 
-fileToBackup="/home/jordan/mc"
-backupLocation="/home/jordan/backup"
-serverName="Freshly"
+fileToBackup="/home/jbentley/mc"
+backupLocation="/home/jbentley/backup"
+serverName="ChiknyCraft"
 startScript="bash start.sh"
 graceperiod="1m"
 serverWorlds=("world" "world_nether" "world_the_end")
@@ -25,6 +25,7 @@ log () {
     builtin echo -e "$@" | tee -a mc-backup_log.txt
 }
 stopHandling () {
+    # injects commands into console via stuff to warn chat of backup, sleeps for graceperiod, restarts, sleeps for hdd spin times
     log "[$currentDay] Warning players & stopping $serverName...\n"
     screen -p 0 -X stuff "say &l&2$serverName is restarting in $graceperiod!$(printf \\r)"
     sleep $graceperiod
@@ -45,6 +46,7 @@ worldfoldercheck () {
     done
 }
 deletebackup () {
+    # Checks if &anything* is in the backup directory and deletes it.
     if [ "$(ls -A $backupLocation)" ]; then
 		log "[$currentDay] Warning: Backup directory not empty! Deleting contents before proceeding ...\n"
                 rm -R $backupLocation
@@ -129,7 +131,7 @@ if $restartOnly; then
 	log "[$currentDay] Restart only started ...\n"
 elif $worldsOnly; then
     log "[$currentDay] Worlds only started ...\n"
-	# Starts the tar with files from the void so that multiple files can be looped in from array then gziped together
+	# Starts the tar with files from the void (/dev/null is a symlink to a non-existent dir) so that multiple files can be looped in from array then gziped together.
     tar cf $backupLocation/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null 
 	for item in "${serverWorlds[@]}"
     do
