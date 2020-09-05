@@ -1,8 +1,7 @@
 #!/bin/bash
 : '
 MC-BACKUP
-https://github.com/J-Bentley/mc-backup.sh 
-Change the below variables to your liking!!'
+https://github.com/J-Bentley/mc-backup.sh'
 
 fileToBackup="/home/jbentley/mc"
 backupLocation="/home/jbentley/backup"
@@ -10,7 +9,7 @@ serverName="ChiknyCraft"
 startScript="bash start.sh"
 graceperiod="1m"
 serverWorlds=("world" "world_nether" "world_the_end")
-# Don't change anything past this line!!
+# Don't change anything past this line unless you know what you're doing.
 
 currentDay=$(date +"%Y-%m-%d-%H:%M")
 screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
