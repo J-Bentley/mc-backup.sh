@@ -41,16 +41,16 @@ worldfoldercheck () {
         if [! -d $backupDir/$item ]; then
             log "[$currentDay] Error: World folder not found! ($backupDir/$item)\n"
             exit 1
-	    fi
+	fi
     done
 }
 deleteBackup () {
     # Deletes contents of backupDir at start of every execution unless restartOnly mode
     if [ "$(ls -A $backupDir)" ]; then
-		log "[$currentDay] Warning: Backup directory not empty! Deleting contents before proceeding ...\n"
-                rm -R $backupDir/*
-		exit 1
-	fi
+	log "[$currentDay] Warning: Backup directory not empty! Deleting contents before proceeding ...\n"
+        rm -R $backupDir/*
+        exit 1
+    fi
 }
 
 # USER INPUT
@@ -89,15 +89,14 @@ if [ $# -gt 1 ]; then
 fi
 # Logs error if serverDir isn't found
 if [ ! -d $serverDir ]; then
-    log "[$currentDay] Error: Server folder not found! ($fileToBackup)\n"
+    log "[$currentDay] Error: Server folder not found! ($serverDir)\n"
     exit 1
 fi
 # Logs error if backupDir isn't found
 if [ ! -d $backupDir ]; then
-    log "[$currentDay] Error: Backup folder not found! ($backupLocation)\n"
+    log "[$currentDay] Error: Backup folder not found! ($backupDir)\n"
     exit 1
 fi
-
 # Logs error if JAVA process isn't detected
 if ! ps -e | grep -q "java"; then
     log "[$currentDay] Warning: $serverName is not running! Continuing without in-game warnings...\n"
@@ -111,12 +110,10 @@ elif [ $screens -gt 1 ]; then
     log "\n[$currentDay] Error: More than 1 screen session is running!\n"
     exit 1
 fi
-
 # Deletes contents of backupDir at start of every execution unless restartOnly mode
 if ! $restartOnly; then
     deleteBackup
 fi
-
 # Wont execute stopHandling if server is offline upon script start
 if $serverRunning; then
     stopHandling
@@ -127,12 +124,12 @@ elapsedTimeStart="$(date -u +%s)"
 
 # LOGIC HANDLING
 if $restartOnly; then
-	log "[$currentDay] Restart only started ...\n"
+    log "[$currentDay] Restart only started ...\n"
 elif $worldsOnly; then
     log "[$currentDay] Worlds only started ...\n"
-	# Starts the tar with files from the void (/dev/null is a symlink to a non-existent dir) so that multiple files can be looped in from array then gziped together.
+    # Starts the tar with files from the void (/dev/null is a symlink to a non-existent dir) so that multiple files can be looped in from array then gziped together.
     tar cf $backupDir/$serverName[WORLDS]-$currentDay.tar --files-from /dev/null 
-	for item in "${serverWorlds[@]}"
+    for item in "${serverWorlds[@]}"
     do
         tar rf $backupDir/$serverName[WORLDS]-$currentDay.tar "$serverDir/$item"
     done
@@ -142,10 +139,10 @@ elif $pluginOnly; then
     tar -czPf $backupDir/$serverName[PLUGINS]-$currentDay.tar.gz $serverDir/plugins
 elif $pluginconfigOnly; then
     log "[$currentDay] Plugin Configs only started...\n"
-	tar -czPf $backupDir/$serverName[PLUGIN-CONFIG]-$currentDay.tar.gz --exclude='*.jar' $serverDir/plugins
+    tar -czPf $backupDir/$serverName[PLUGIN-CONFIG]-$currentDay.tar.gz --exclude='*.jar' $serverDir/plugins
 else
-	log "[$currentDay] Full compression started...\n"
-	tar -czPf $backupDir/$serverName-$currentDay.tar.gz $serverDir
+    log "[$currentDay] Full compression started...\n"
+    tar -czPf $backupDir/$serverName-$currentDay.tar.gz $serverDir
 fi
 
 # Grabs date in seconds AFTER compression completes then does math to find time it took to compress
@@ -155,23 +152,23 @@ elapsed="$(($elapsedTimeEnd-$elapsedTimeStart))"
 # Grabs size of item in backuplocation, assumes compressed item is only file in dir via deletebackup function
 compressedSize=$(du -sh $backupLocation* | cut -c 1-3)
 
-# Will restart server if it was online upon script start OR if in restartonly mode regardless of server state at script launch -- therefore WONT restart server if offline upon script launch ever
+# Will restart server if it was online upon script start OR if in restartOnly mode regardless of server state at script launch -- therefore WONT ever restart server if offline upon script launch unless restartOnly
 if $serverRunning || $restartOnly; then
     screen -p 0 -X stuff "$startScript $(printf \\r)"
-	log "[$currentDay] $startScript initialized ...\n"
+    log "[$currentDay] $startScript run! Restarting $serverName...\n"
 fi
 
 if $restartOnly; then
     log "[$currentDay] $serverName restarted in $((elapsed/60)) min(s)!\n"
 elif $worldsOnly; then
-	log "[$currentDay] $serverWorlds compressed to $compressedSize and copied to $backupDir in $((elapsed/60)) min(s)!\n"
+    log "[$currentDay] $serverWorlds compressed to $compressedSize and copied to $backupDir in $((elapsed/60)) min(s)!\n"
 elif $pluginOnly; then
-    log "[$currentDay] $fileToBackup/plugins* compressed from $uncompressedSize to $compressedSize and copied to $backupDir in $((elapsed/60)) min(s)!\n"
+    log "[$currentDay] $serverDir/plugins* compressed from $uncompressedSize to $compressedSize and copied to $backupDir in $((elapsed/60)) min(s)!\n"
 elif $pluginconfigOnly; then
     log "[$currentDay] Plugin configs compressed from $uncompressedSize to $compressedSize and copied to $backupDir in $((elapsed/60)) min(s)!\n"
 else
     # Grabs size of Server file in kb for comparison on output
     uncompressedSize=$(du -sh $fileToBackup* | cut -c 1-3) 
-	log "[$currentDay] $fileToBackup compressed from $uncompressedSize to $compressedSize and copied to $backupDir in $((elapsed/60)) min(s)!\n"
+    log "[$currentDay] $fileToBackup compressed from $uncompressedSize to $compressedSize and copied to $backupDir in $((elapsed/60)) min(s)!\n"
 fi
 exit 0
