@@ -1,12 +1,12 @@
 ## What is it?
-A BASH script to automate graceful restarting & local backups of a Spigot/Paper/Bukkit/Minecraft server running on Ubuntu in a Screen session.
+A BASH script to automate graceful restarting & local backups of a Minecraft server running in Screen on Linux.
 
 ## Setup   
 Open the script in a text editor and change these variables at the top:  
 
-- **fileToBackup** = Your root server directory. *(dont include closing "/")*  
+- **serverDir** = Your root server directory. *(dont include closing "/")*  
 
-- **backupLocation** = The location to backup the compressed files to. *(dont include closing "/")*   
+- **backupDir** = The location to backup the compressed files to. *(dont include closing "/")*   
 
 - **serverName** = The name of your server.  
 
@@ -15,6 +15,11 @@ Open the script in a text editor and change these variables at the top:
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
 - Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``. 
+
+- OR to auto start the server_start.sh at boot and automatically in a screen session:
+1.
+2.
+3.
 
 ## Usage  
 
@@ -41,5 +46,5 @@ Crontab examples:
 ## CAVEATS
 - Only 1 or no arg can be called at a time.
 - only 1 screen session can be running on the system.
-- No way to disable auto restart of the server after compression correctly. 
-- TO FIX: Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) 
+- No way to disable auto restart of the server after a successful compression. 
+- Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) 
