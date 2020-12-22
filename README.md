@@ -2,7 +2,7 @@
 A BASH script to automate graceful restarting & local backups of a Minecraft server running in Screen on Linux.
 
 ## Setup   
-Open the script in a text editor and change these variables at the top:  
+1. Open the script in a text editor and change these variables at the top:  
 
 - **serverDir** = Your root server directory. *(dont include closing "/")*  
 
@@ -14,21 +14,19 @@ Open the script in a text editor and change these variables at the top:
 
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
-- Start a screen session with ``screen -S <id>``, deattach with ``ctrl + a + d``, and reattach with ``screen -r <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``.  
-
-- OR to auto-start the server at boot and in a screen session:
-1. `crontab -e` or `sudo crontab -e` to run as sudo
-2. Add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of file
-3. In your Minecraft server start.sh:  
+2. Manually start a screen session with ``screen -S <id>``, deattach with ``ctrl + a + d``, and reattach with ``screen -r <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``.
+OR to auto-start the server at boot and in a screen session:
+- `crontab -e` or `sudo crontab -e` to run as sudo
+- Add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of file
+- In your Minecraft server start.sh:  
 ```!#/bin/sh  
 cd /path/to/server  
 screen -dmS mc  
 screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
 ```
-4. List screens with `screen -ls` attach with `screen -r` and de-attach with `ctrl + a + d`
+- List screens with `screen -ls` attach with `screen -r` and de-attach with `ctrl + a + d`
 
 ## Usage  
-
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
 
 - **No args:** Gracefully stops the server if its running, compresses entire server directory to backup location and restarts server.  
