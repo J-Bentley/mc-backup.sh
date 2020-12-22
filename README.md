@@ -12,7 +12,7 @@ A BASH script to automate graceful restarting & local backups of a Minecraft ser
 2. Manually start a screen session with ``screen -S <id>``, deattach with ``ctrl + a + d``, and reattach with ``screen -r <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``.  
 
 OR to autostart the server at boot AND in a screen session:
-- `crontab -e` or `sudo crontab -e` to run as sudo
+- `crontab -e`
 - Add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of file
 - In your Minecraft server start.sh:  
 ```!#/bin/sh  
