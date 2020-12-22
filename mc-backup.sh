@@ -82,7 +82,7 @@ do
     shift
 done
 
-# Logs error if too many args given to script
+# Logs error and cancels script if too many args given to script
 if [ $# -gt 1 ]; then
     log -e "[$currentDay] Error: Too many arguments! Backup has been cancelled.\n"
     exit 1
@@ -92,12 +92,12 @@ if [ ! -d $serverDir ]; then
     log "[$currentDay] Error: Server folder not found! Backup has been cancelled. ($serverDir)\n"
     exit 1
 fi
-# Logs error if backupDir isn't found
+# Logs error and cancels script if backupDir isn't found
 if [ ! -d $backupDir ]; then
     log "[$currentDay] Error: Backup folder not found! Backup has been cancelled. ($backupDir)\n"
     exit 1
 fi
-# Logs error if JAVA process isn't detected
+# Logs error if JAVA process isn't detected but will continue anyways!!
 if ! ps -e | grep -q "java"; then
     log "[$currentDay] Warning: $serverName is not running! Continuing without in-game warnings...\n"
     serverRunning=false
