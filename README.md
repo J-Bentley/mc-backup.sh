@@ -20,11 +20,11 @@ Open the script in a text editor and change these variables at the top:
 1. `crontab -e` or `sudo crontab -e` to run as sudo
 2. Add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of file
 3. In your Minecraft server start.sh:  
-!#/bin/sh  
+```!#/bin/sh  
 cd /path/to/server  
 screen -dmS mc  
 screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
-  
+```
 ## Usage  
 
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
