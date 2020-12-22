@@ -17,9 +17,13 @@ Open the script in a text editor and change these variables at the top:
 - Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``. 
 
 - OR to auto-start the server at boot and in a screen session:
-1.
-2.
-3.
+1. `crontab -e` or `sudo crontab -e` to run as sudo
+2. Add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of file
+3. In your Minecraft server start.sh:
+ - `!#/bin/sh`
+ - `cd /path/to/server`
+ - `screen -dmS mc`
+ - `screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'`
 
 ## Usage  
 
