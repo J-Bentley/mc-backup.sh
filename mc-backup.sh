@@ -87,7 +87,7 @@ if [ $# -gt 1 ]; then
     log -e "[$currentDay] Error: Too many arguments! Backup has been cancelled.\n"
     exit 1
 fi
-# Logs error if serverDir isn't found
+# Logs error and cancels script if serverDir isn't found
 if [ ! -d $serverDir ]; then
     log "[$currentDay] Error: Server folder not found! Backup has been cancelled. ($serverDir)\n"
     exit 1
