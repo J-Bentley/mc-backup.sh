@@ -39,7 +39,7 @@ worldfoldercheck () {
     for item in "${serverWorlds[@]}"
     do
         if [! -d $backupDir/$item ]; then
-            log "[$currentDay] Error: World folder not found! ($backupDir/$item)\n"
+            log "[$currentDay] Error: World folder not found! Backup has been cancelled. ($backupDir/$item)\n"
             exit 1
 	fi
     done
@@ -47,7 +47,7 @@ worldfoldercheck () {
 deleteBackup () {
     # Deletes contents of backupDir at start of every execution unless restartOnly mode
     if [ "$(ls -A $backupDir)" ]; then
-	log "[$currentDay] Warning: Backup directory not empty! Deleting contents before proceeding ...\n"
+	log "[$currentDay] Warning: Backup directory not empty! Deleting contents before proceeding...\n"
         rm -R $backupDir/*
         exit 1
     fi
@@ -58,7 +58,7 @@ while [ $# -gt 0 ];
 do
     case "$1" in
       -h|--help)
-        echo -e "MC-BACKUP by Arcaniist\n---------------------------\nA compression script of\n[$serverDir] to [$backupDir] for $serverName!\n"
+        echo -e "MC-BACKUP by Jordan B\n---------------------------\nA compression script of\n[$serverDir] to [$backupDir] for $serverName!\n"
         echo -e "Usage:\nNo args | Compress $serverName root dir.\n-h | Help (this).\n-w | Compress worlds only.\n-r | Restart with warnings, no backups made.\n-p | Compress plugins only.\n-pc | Compress plugin config files only."
         exit 0
         ;;
@@ -84,17 +84,17 @@ done
 
 # Logs error if too many args given to script
 if [ $# -gt 1 ]; then
-    log -e "[$currentDay] Error: Too many arguments!\n"
+    log -e "[$currentDay] Error: Too many arguments! Backup has been cancelled.\n"
     exit 1
 fi
 # Logs error if serverDir isn't found
 if [ ! -d $serverDir ]; then
-    log "[$currentDay] Error: Server folder not found! ($serverDir)\n"
+    log "[$currentDay] Error: Server folder not found! Backup has been cancelled. ($serverDir)\n"
     exit 1
 fi
 # Logs error if backupDir isn't found
 if [ ! -d $backupDir ]; then
-    log "[$currentDay] Error: Backup folder not found! ($backupDir)\n"
+    log "[$currentDay] Error: Backup folder not found! Backup has been cancelled. ($backupDir)\n"
     exit 1
 fi
 # Logs error if JAVA process isn't detected
@@ -104,10 +104,10 @@ if ! ps -e | grep -q "java"; then
 fi
 
 if [ $screens -eq 0 ]; then
-    log "[$currentDay] Error: No screen sessions running!\n"
+    log "[$currentDay] Error: No screen sessions running! Backup has been cancelled.\n"
     exit 1
 elif [ $screens -gt 1 ]; then
-    log "\n[$currentDay] Error: More than 1 screen session is running!\n"
+    log "\n[$currentDay] Error: More than 1 screen session is running! Backup has been cancelled.\n"
     exit 1
 fi
 # Deletes contents of backupDir at start of every execution unless restartOnly mode
