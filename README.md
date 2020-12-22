@@ -14,7 +14,7 @@ Open the script in a text editor and change these variables at the top:
 
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
-- Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``. 
+- Start a screen session with ``screen -S <id>``, deattach with ``ctrl + a + d``, and reattach with ``screen -r <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``.  
 
 - OR to auto-start the server at boot and in a screen session:
 1. `crontab -e` or `sudo crontab -e` to run as sudo
@@ -25,6 +25,8 @@ cd /path/to/server
 screen -dmS mc  
 screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
 ```
+4. List screens with `screen -ls` attach with `screen -r` and de-attach with `ctrl + a + d`
+
 ## Usage  
 
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
