@@ -16,7 +16,7 @@ Open the script in a text editor and change these variables at the top:
 
 - Start a screen session with ``screen -S <id>``, deattach with ``ctrl+a+d``, and reattach with ``screen -R <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``. 
 
-- OR to auto start the server_start.sh at boot and automatically in a screen session:
+- OR to auto-start the server at boot and in a screen session:
 1.
 2.
 3.
