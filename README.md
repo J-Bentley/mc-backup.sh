@@ -22,9 +22,13 @@ Open the script in a text editor and change these variables at the top:
 3. In your Minecraft server start.sh:  
 ``  
 !#/bin/sh  
+
 cd /path/to/server  
+
 screen -dmS mc  
+
 screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
+
 ``  
   
 ## Usage  
