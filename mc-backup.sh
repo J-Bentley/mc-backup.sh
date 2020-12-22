@@ -5,7 +5,7 @@ https://github.com/J-Bentley/mc-backup.sh'
 
 serverDir="/home/jbentley/mc"
 backupDir="/home/jbentley/backup"
-serverName="ChiknyCraft"
+serverName="awesomeserver"
 startScript="bash start.sh"
 gracePeriod="1m"
 serverWorlds=("world" "world_nether" "world_the_end")
