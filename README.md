@@ -22,8 +22,6 @@ screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'
 ```
 - List screens with `screen -ls` attach with `screen -r` and de-attach with `ctrl + a + d`  
 
-3. Only once you've manually or automatically gotten your server running in a screen session can you execute mc-backup.sh.
-
 ## Usage  
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
 
