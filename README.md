@@ -1,5 +1,5 @@
 ## What is it?
-A BASH script to automate graceful restarting & local backups of a Minecraft server running in Screen on Ubuntu.
+A BASH script to automate graceful restarting & local backups of a Minecraft server running in Screen on Ubuntu. Easily automated with crontab!
 
 ## Setup   
 1. Open the script in a text editor and change these variables at the top:  
