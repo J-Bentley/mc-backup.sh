@@ -9,18 +9,25 @@ A BASH script to automate graceful restarting & local backups of a Minecraft ser
 - **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
-2. Manually start a screen session with ``screen -S <scren-id>``, deattach with ``ctrl + a + d``, and reattach with ``screen -r <screen-id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``.  
+2. Manually start a screen session with ``screen -S <screen-id>``and start your Minecraft server within the screen session. Ensure there is only 1 running screen session with ``screen -ls``. (or see below for how to automate)  
 
-OR to autostart the server at boot AND in a screen session:
+(optional) Auto-start minecraft server and screen at boot:
 - `crontab -e`
-- Add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of file
-- In your Minecraft server start.sh:  
+- add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of crontab file
+- in your Minecraft server start.sh:  
 ```!#/bin/sh  
 cd /path/to/server  
 screen -dmS mc  
 screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
 ```
-3. Within the screen session you created, start your minecraft server. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a seperate TTY.
+
+3. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a seperate SSH session/TTY when you're ready to initiate a backup. Re-attach to the screen session with ``screen -r <screen-id>``. (or see below for how to automate)    
+
+(optional) Automate mc-backup.sh with [Crontab](https://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/):  
+- Gracefully restart server without backup every day at midnight: ```00 24 * * * bash /home/me/mc-backup.sh -r```
+- Backup just world files every other day at midnight: ```00 24 * * 1,3,5 bash /home/me/mc-backup.sh -w```
+- Backup just plugin config files every friday: ```00 24 * * 6 bash /home/me/mc-backup.sh -pc```
+- Full server backup every monday at 8 AM: ```00 8 * * 1 bash /home/me/mc-backup.sh```
 
 ## Usage  
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
@@ -35,13 +42,6 @@ screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'
 - **-p | plugins:** Gracefully stops the server if its running, compresses plugin directory only to backup location and restarts server. Includes plugin .jars. 
 
 - **-pc | pluginconfig:** Gracefully stops the server if its running, compresses plugin config directories only to backup location and restarts server. Ignores plugin .jars.  
-
-**Best when automated with [Crontab](https://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/).**  
-Crontab examples:
-- Gracefully restart server without backup every day at midnight: ```00 24 * * * bash /home/me/mc-backup.sh -r```
-- Backup just world files every other day at midnight: ```00 24 * * 1,3,5 bash /home/me/mc-backup.sh -w```
-- Backup just plugin config files every friday: ```00 24 * * 6 bash /home/me/mc-backup.sh -pc```
-- Full server backup every monday at 8 AM: ```00 8 * * 1 bash /home/me/mc-backup.sh```
 
 ## CAVEATS
 - Only 1 or no arg can be called at a time.
