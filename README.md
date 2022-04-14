@@ -9,7 +9,7 @@ A BASH script to automate graceful restarting & local backups of a Minecraft ser
 - **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
 - **serverWorlds** = An array of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
-2. Manually start a screen session with ``screen -S <id>``, deattach with ``ctrl + a + d``, and reattach with ``screen -r <id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``.  
+2. Manually start a screen session with ``screen -S <scren-id>``, deattach with ``ctrl + a + d``, and reattach with ``screen -r <screen-id>`` if needed. Ensure there is only 1 screen session running with ``screen -ls``.  
 
 OR to autostart the server at boot AND in a screen session:
 - `crontab -e`
@@ -20,7 +20,7 @@ cd /path/to/server
 screen -dmS mc  
 screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
 ```
-- List screens with `screen -ls` attach with `screen -r` and de-attach with `ctrl + a + d`  
+3. Within the screen session you created, start your minecraft server. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a seperate TTY.
 
 ## Usage  
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
