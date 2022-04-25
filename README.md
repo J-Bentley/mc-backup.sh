@@ -13,7 +13,7 @@ A BASH script to automate graceful restarting & local backups of a Minecraft ser
 
 3. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a seperate SSH session/TTY when you're ready to initiate a backup. (or see below for how to automate)    
 
-(optional) Auto-start minecraft server and screen at boot:  
+(optional) Auto-start minecraft server and screen at system boot:  
 - `crontab -e`
 - add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of crontab file
 - in your Minecraft server start.sh:  
