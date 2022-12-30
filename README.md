@@ -7,6 +7,7 @@ A BASH script to automate graceful restarting & local backups of a Minecraft ser
 - **backupDir** = The location to backup the compressed files to. *(dont include closing "/")*   
 - **serverName** = The name of your server.  
 - **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
+- **gracePeriod** = Time to wait between warning in-game players and stopping server.  
 - **serverWorlds** = A list of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
 
 2. Manually start a screen session with ``screen -S <screen-id>`` and start your Minecraft server within the screen session. Ensure there is only 1 running screen session with ``screen -ls`` and re-attach to the screen session with ``screen -r <screen-id>``. (or see below for how to automate)  
