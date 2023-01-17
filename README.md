@@ -5,7 +5,6 @@ A BASH script to automate graceful restarting & local backups of a Minecraft ser
 1. Open the script in a text editor and change these variables at the top:  
 - **serverDir** = Your root server directory. *(dont include closing "/")*  
 - **backupDir** = The location to backup the compressed files to. *(dont include closing "/")*   
-- **serverName** = The name of your server.  
 - **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
 - **gracePeriod** = Time to wait between warning in-game players and stopping server.  
 - **serverWorlds** = A list of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
@@ -47,5 +46,4 @@ screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'
 ## CAVEATS
 - Only 1 or no arg can be called at a time.
 - only 1 screen session can be running on the system.
-- No way to disable auto restart of the server after a successful compression. 
-- Script will continue with 0 screens running and java not running but not if java is running and 0 screens. (already continues without exiting with 1 screen and java not running.) 
+- If 2 backups of the same type are made on the same day, the second will overwrite the first.
