@@ -93,7 +93,7 @@ if ! ps -e | grep -q "java"; then
     log "[$currentDay] Warning: Server is not running! Continuing without in-game warnings...\n"
     serverRunning=false
 fi
- 
+ # Logs error if no screen sessions or more than one are running, for every session a file is created in /var/run
 if [ $screens -eq 0 ]; then
     log "[$currentDay] Error: No screen sessions running! Backup has been cancelled.\n"
     exit 1
