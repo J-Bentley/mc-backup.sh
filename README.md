@@ -1,5 +1,5 @@
 ## What is it?
-A BASH script to automate graceful restarting & local backups of a Minecraft server running in Screen on Ubuntu. Easily automated with crontab!
+A bash script to gracefully stop/restart and perform local backups of a Minecraft server running in Screen on Ubuntu. Back up full server files, just worlds or just plugins with in-game warnings to tell players the server is restarting. Easily automated with crontab.
 
 ## Setup   
 1. Open the script in a text editor and change these variables at the top:  
@@ -39,11 +39,12 @@ screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'
 - **-r | Restart:** Saves & restarts server with no backup made.  
 
 - **-w | Worlds:** Gracefully stops the server if its running, compresses world directories only to backup location and restarts server.   
+
 - **-p | plugins:** Gracefully stops the server if its running, compresses plugin directory only to backup location and restarts server. Includes plugin .jars. 
 
 - **-pc | pluginconfig:** Gracefully stops the server if its running, compresses plugin config directories only to backup location and restarts server. Ignores plugin .jars.  
 
-## CAVEATS
+## Caveats
 - Only 1 or no arg can be called at a time.
 - only 1 screen session can be running on the system.
 - If 2 backups of the same type are made on the same day, the second will overwrite the first.
