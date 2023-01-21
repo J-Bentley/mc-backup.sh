@@ -1,6 +1,6 @@
 #!/bin/bash
 : '
-MC-BACKUP
+mc-backup by J-Bentley
 https://github.com/J-Bentley/mc-backup.sh'
  
 serverDir="/home/jordan/minecraft-server"
@@ -23,7 +23,7 @@ log () {
     builtin echo -e "$@" | tee -a mc-backup_log.txt
 }
 stopHandling () {
-    # injects commands into console via stuff to warn chat of backup, sleeps for graceperiod, restarts, sleeps for hdd spin times
+    # injects commands into screen via stuff to notify players, sleeps for graceperiod, stop server and sleeps for hdd spin times
     log "[$currentDay] Warning players & stopping server...\n"
     screen -p 0 -X stuff "say Server is restarting in $gracePeriod!$(printf \\r)"
     sleep $gracePeriod
@@ -49,7 +49,7 @@ while [ $# -gt 0 ];
 do
     case "$1" in
       -h|--help)
-        echo -e "mc-bakup by J-Bentley\n---------------------------\nBackup script for a Minecraft server running in screen\n"
+        echo -e "mc-backup by J-Bentley\n---------------------------\nBackup script for a Minecraft server running in screen\n"
         echo -e "Usage:\nNo args | Full backup\n-h | Help\n-w | Backup worlds only\n-r | Restart server with in-game warnings, no backup.\n-p | Backup plugins only.\n-pc | Backup plugin configs only."
         exit 0
         ;;
