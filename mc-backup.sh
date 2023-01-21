@@ -11,7 +11,7 @@ serverWorlds=("world" "world_nether" "world_the_end")
 # Don't change anything past this line unless you know what you're doing.
  
 currentDay=$(date +"%Y-%m-%d")
-screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0)
+screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0) # a file is created in /var/run/$user for every screen session
 serverRunning=true
 worldsOnly=false
 pluginOnly=false
@@ -88,12 +88,12 @@ if [ ! -d $backupDir ]; then
     log "[$currentDay] Error: Backup folder not found! Backup has been cancelled. ($backupDir doesnt exist)\n"
     exit 1
 fi
-# Logs error if JAVA process isn't detected but will continue anyways!!
+# Logs error if java process isn't running but will continue anyways
 if ! ps -e | grep -q "java"; then
     log "[$currentDay] Warning: Server is not running! Continuing without in-game warnings...\n"
     serverRunning=false
 fi
- # Logs error if no screen sessions or more than one are running, for every session a file is created in /var/run
+ # Logs error if no screen sessions or more than one are running
 if [ $screens -eq 0 ]; then
     log "[$currentDay] Error: No screen sessions running! Backup has been cancelled.\n"
     exit 1
