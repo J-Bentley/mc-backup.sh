@@ -26,8 +26,8 @@ screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'
 (optional) Automate mc-backup.sh with [Crontab](https://ostechnix.com/a-beginners-guide-to-cron-jobs/):  
 - Gracefully restart server without backup every day at midnight: ```00 24 * * * bash /home/me/mc-backup.sh -r```
 - Backup just world files every other day at midnight: ```00 24 * * 1,3,5 bash /home/me/mc-backup.sh -w```
-- Backup just plugin config files every friday: ```00 24 * * 6 bash /home/me/mc-backup.sh -pc```
-- Full server backup every monday at 8 AM: ```00 8 * * 1 bash /home/me/mc-backup.sh```
+- Backup just plugin config files every friday: ```00 24 * * 6 bash /home/J-Bentley/mc-backup.sh -pc```
+- Full server backup every monday at 8 AM: ```00 8 * * 1 bash /home/J-Bentley/mc-backup.sh```
 
 ## Usage  
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
