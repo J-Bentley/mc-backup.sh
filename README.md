@@ -16,14 +16,14 @@ A bash script to gracefully stop/restart and perform local backups of a Minecraf
 (optional) Auto-start minecraft server and screen at system boot:  
 - `crontab -e`
 - add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of crontab file
-- in your Minecraft server start.sh: *(change <screen-id> and <RAM>)*  
+- in your Minecraft server start.sh: 
 ```!#/bin/sh  
 cd /path/to/server  
-screen -dmS <screen-id>  
-screen -p 0 -X stuff 'java -Xmx<RAM>G -Xmx<RAM>G -jar paper-*.jar\n'  
+screen -dmS minecraft-server
+screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
 ```
 
-(optional) Automate mc-backup.sh with [Crontab](https://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/):  
+(optional) Automate mc-backup.sh with [Crontab](https://ostechnix.com/a-beginners-guide-to-cron-jobs/):  
 - Gracefully restart server without backup every day at midnight: ```00 24 * * * bash /home/me/mc-backup.sh -r```
 - Backup just world files every other day at midnight: ```00 24 * * 1,3,5 bash /home/me/mc-backup.sh -w```
 - Backup just plugin config files every friday: ```00 24 * * 6 bash /home/me/mc-backup.sh -pc```
