@@ -20,7 +20,7 @@ A bash script to gracefully stop/restart and perform local backups of a Minecraf
 ```!#/bin/sh  
 cd /path/to/server  
 screen -dmS minecraft-server
-screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'  
+screen -p 0 -X stuff 'java -Xmx7G -Xms6G -jar paper-*.jar\n'  
 ```
 
 (optional) Automate mc-backup.sh with [Crontab](https://ostechnix.com/a-beginners-guide-to-cron-jobs/):  
