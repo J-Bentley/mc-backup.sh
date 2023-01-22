@@ -16,7 +16,7 @@ A bash script to gracefully stop/restart and perform local backups of a Minecraf
 (optional) Auto-start minecraft server and screen at system boot:  
 - `crontab -e`
 - add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of crontab file
-- in your Minecraft server start.sh: 
+- in your Minecraft server start.sh: (change screen-id and RAM to your liking) 
 ```!#/bin/sh  
 cd /path/to/server  
 screen -dmS minecraft-server
