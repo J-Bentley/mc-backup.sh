@@ -11,7 +11,7 @@ A bash script to gracefully stop/restart and perform local backups of a Minecraf
 
 2. Manually start a screen session with ``screen -S <screen-id>`` and start your Minecraft server within the screen session. Ensure there is only 1 running screen session with ``screen -ls``. (or see below for how to automate)  
 
-3. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a seperate SSH session/TTY when you're ready to initiate a backup. Re-attach to the screen session with ``screen -r <screen-id>``, if needed. (or see below for how to automate)    
+3. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a SSH session outside of screen when you're ready to initiate a backup. Re-attach to the screen session with ``screen -r <screen-id>`` if needed. (or see below for how to automate)    
 
 (optional) Auto-start minecraft server and screen at system boot:  
 - `crontab -e`
