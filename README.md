@@ -48,3 +48,4 @@ screen -p 0 -X stuff 'java -Xmx6G -Xmx7G -jar paper-*.jar\n'
 - Only 1 or no arg can be called at a time.
 - only 1 screen session can be running on the system.
 - If 2 backups of the same type are made on the same day, the second will overwrite the first.
+- If the server is offline upon script launch, won't restart server unless restart only mode.
