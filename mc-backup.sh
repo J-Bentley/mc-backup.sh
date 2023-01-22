@@ -3,8 +3,8 @@
 mc-backup by J-Bentley
 https://github.com/J-Bentley/mc-backup.sh'
  
-serverDir="/home/jordan/minecraft-server"
-backupDir="/home/jordan/minecraft-backup"
+serverDir="/home/J-Bentley/minecraft-server"
+backupDir="/home/J-Bentley/minecraft-backup"
 startScript="bash start.sh"
 gracePeriod="1m"
 serverWorlds=("world" "world_nether" "world_the_end")
