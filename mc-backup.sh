@@ -11,7 +11,7 @@ serverWorlds=("world" "world_nether" "world_the_end")
 # Don't change anything past this line unless you know what you're doing.
  
 currentDay=$(date +"%Y-%m-%d")
-screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0) # a file is created in /var/run/$user for every screen session
+screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0) # a file is created in /var/run/screen/S-$user for every screen session
 serverRunning=true
 worldsOnly=false
 pluginOnly=false
