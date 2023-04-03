@@ -49,8 +49,8 @@ while [ $# -gt 0 ];
 do
     case "$1" in
       -h|--help)
-        echo -e "mc-backup by J-Bentley\n---------------------------\nBackup script for a Minecraft server running in screen\n"
-        echo -e "Usage:\nNo args | Full backup\n-h | Help\n-w | Backup worlds only\n-r | Restart server with in-game warnings, no backup.\n-p | Backup plugins only.\n-pc | Backup plugin configs only."
+        echo -e "mc-backup by J-Bentley\nA Minecraft backup script.\n"
+        echo -e "\nUsage:\nNo args | Full backup\n-h | Help\n-w | Backup worlds only\n-r | Restart server with in-game warnings, no backup.\n-p | Backup plugins only.\n-pc | Backup plugin configs only."
         exit 0
         ;;
       -w|--worlds)
