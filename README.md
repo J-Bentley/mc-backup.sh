@@ -4,10 +4,10 @@ A bash script to gracefully stop/restart and perform local backups of a Minecraf
 ## Setup   
 1. Open the script in a text editor and change these variables at the top:  
 - **serverDir** = Your root server directory. *(dont include closing "/")*  
-- **backupDir** = The location to backup the compressed files to. *(dont include closing "/")*   
-- **startScript** = The command to restart the server. Keep in mind this is run from the screen session.  
+- **backupDir** = The location to backup the compressed files to. The folder must exist already. *(dont include closing "/")*   
+- **startScript** = The command to restart the server.  
 - **gracePeriod** = Time to wait between warning in-game players and stopping server.  
-- **serverWorlds** = A list of the servers world directory names. Includes defaults, add any of your custom worlds, seperated by a space. (ex: "arena" "lobby" "creative")  
+- **serverWorlds** = A list of the world folder names. Includes defaults, add any of your custom worlds seperated by a space. (ex: "arena" "lobby" "creative")  
 
 2. Manually start a screen session with ``screen -S <screen-id>`` and start your Minecraft server within the screen session. Ensure there is only 1 running screen session with ``screen -ls``. (or see below for how to automate)  
 
@@ -23,7 +23,7 @@ screen -dmS minecraft-server
 screen -p 0 -X stuff 'java -Xmx7G -Xms6G -jar paper-*.jar\n'  
 ```
 
-(optional) Automate mc-backup.sh with [Crontab](https://ostechnix.com/a-beginners-guide-to-cron-jobs/):  
+(optional) Automate mc-backup.sh with [Crontab](https://ostechnix.com/a-beginners-guide-to-cron-jobs/) (examples below):  
 - Gracefully restart server every day at midnight: ```00 24 * * * bash /home/J-Bentley/mc-backup.sh -r```
 - Backup just world files every other day at midnight: ```00 24 * * 1,3,5 bash /home/J-Bentley/mc-backup.sh -w```
 - Backup just plugin config files every friday: ```00 24 * * 6 bash /home/J-Bentley/mc-backup.sh -pc```
