@@ -3,11 +3,11 @@ A bash script to gracefully stop/restart and perform local backups of a Minecraf
 
 ## Setup   
 1. Open the script in a text editor and change these variables at the top:  
-- **serverDir** = Your root server directory. *(dont include closing "/")*  
-- **backupDir** = The location to backup the compressed files to. The folder must exist already. *(dont include closing "/")*   
+- **serverDir** = Your root server directory. (dont include closing "/")  
+- **backupDir** = The location to backup the compressed files to. The folder must exist already. (dont include closing "/")   
 - **startScript** = The command to restart the server.  
 - **gracePeriod** = Time to wait between warning in-game players and stopping server.  
-- **serverWorlds** = A list of the world folder names. Includes defaults, add any of your custom worlds seperated by a space. (ex: "arena" "lobby" "creative")  
+- **serverWorlds** = A list of the world folder names. Includes defaults, add any of your custom worlds here. 
 
 2. Manually start a screen session with ``screen -S <screen-id>`` and start your Minecraft server within the screen session. Ensure there is only 1 running screen session with ``screen -ls``. (or see below for how to automate)  
 
