@@ -11,16 +11,16 @@ A bash script to gracefully stop/restart and perform local backups of a Minecraf
 
 2. Manually start a screen session with ``screen -S <screen-id>`` and start your Minecraft server within the screen session. Ensure there is only 1 running screen session with ``screen -ls``. (or see below for how to automate)  
 
-3. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a SSH session outside of screen when you're ready to initiate a backup. Re-attach to the screen session with ``screen -r <screen-id>`` if needed. (or see below for how to automate)    
+3. Deattach from the screen session with ``ctrl + a + d`` and run the mc-backup.sh script from a SSH session outside of screen when you're ready to initiate a backup. Re-attach to the screen session with ``screen -r <screen-id>`` if needed. (or see below for how to automate with crontab)    
 
 (optional) Auto-start minecraft server and screen at system boot:  
 - `crontab -e`
 - add `@reboot sleep 60 && bash /path/to/server/start.sh` to end of crontab file
-- in your Minecraft server start.sh: (change screen-id and RAM to your liking) 
+- in your Minecraft server start.sh:    
 ```!#/bin/sh  
 cd /path/to/server  
-screen -dmS minecraft-server
-screen -p 0 -X stuff 'java -Xmx7G -Xms6G -jar paper-*.jar\n'  
+screen -dmS <screen-id>
+screen -p 0 -X stuff 'java -Xms<RAM>G -Xmx<RAM>G -jar paper*\n'  
 ```
 
 (optional) Automate mc-backup.sh with [Crontab](https://ostechnix.com/a-beginners-guide-to-cron-jobs/) (examples below):  
