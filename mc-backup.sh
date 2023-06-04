@@ -39,7 +39,7 @@ worldfoldercheck () {
     for item in "${serverWorlds[@]}"
     do
         if [ ! -d $serverDir/$item ]; then
-            log "[$currentDay] [$currentTime] Error: World folder not found! Backup has been cancelled. ($backupDir/$item doesnt exist)\n"
+            log "[$currentDay] [$currentTime] Error: World folder not found! Backup has been cancelled. ($serverDir/$item doesnt exist)\n"
             exit 1
 	fi
     done
