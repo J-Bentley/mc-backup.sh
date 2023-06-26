@@ -47,4 +47,4 @@ screen -p 0 -X stuff 'java -Xms<RAM>G -Xmx<RAM>G -jar paper*\n'
 ## Caveats
 - Only 1 or no arg can be called at a time.
 - only 1 screen session can be running on the system.
-- If the server is offline when mc-backup is run, won't restart it after a backup unless in restartonly mode (-r).
+- If the server is offline when mc-backup is run, won't restart it after a backup unless in restartonly mode (-r). (submit an issue if you think this should be changed)  
