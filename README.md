@@ -1,3 +1,5 @@
+## All persons including trans deserve healthcare, education and equal rights. Nobody is free until we are all free!
+
 ## What is it?
 A bash script to gracefully stop/restart and perform local backups of a Minecraft server running in Screen on Ubuntu. Back up full server files, just worlds or just plugins with in-game warnings to tell players the server is restarting. Easily automated with crontab.
 
