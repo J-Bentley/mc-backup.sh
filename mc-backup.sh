@@ -11,17 +11,17 @@ gracePeriod="1m"
 serverWorlds=("world" "world_nether" "world_the_end")
 # Don't change anything past this line unless you know what you're doing.
 
-timeStamp=$(date +"[%Y-%m-%d-%H-%M]")
-screens=$(ls /var/run/screen/S-$USER -1 | wc -l || 0) # a file is created in /var/run/screen/S-$user for every screen session
+timeStamp=$(date +"[%Y-%m-%d %H:%M:%S]")
+screens=$(screen -ls | grep -c "$USER")
 serverRunning=true
 worldsOnly=false
 pluginOnly=false
 restartOnly=false
-pluginconfigOnly=false
+pluginConfigOnly=false
  
 log () {
     # Echos text passed to function and appends to file at same time
-    builtin echo -e "$@" | tee -a mc-backup_log.txt
+    builtin echo -e "$@" | tee -a "mc-backup_log.txt"
 }
 stopHandling () {
     # injects commands into screen via stuff to notify players, sleeps for graceperiod, stop server and sleeps for hdd spin times
@@ -38,16 +38,16 @@ worldfolderCheck () {
     # Checks to make sure all the worlds defined in serverWorlds array exist as directories in serverDir
     for item in "${serverWorlds[@]}"
     do
-        if [ ! -d $serverDir/$item ]; then
-            log "$timeStamp Error: World folder not found! Backup has been cancelled. ($serverDir/$item doesnt exist)\n"
-            exit 1
+        if [ ! -d "$serverDir/$item" ]; then
+            log "$timeStamp Error: World folder not found! Backup has been cancelled. ("$serverDir/$item" doesnt exist)\n"
+            exit 3
 	    fi
     done
 }
 
 if [ $# -gt 1 ]; then
     log -e "$timeStamp Error: Too many arguments! Backup has been cancelled.\n"
-    exit 1
+    exit 2
 fi
 
 if [ $# -eq 0 ]; then
@@ -77,11 +77,11 @@ do
         ;;
       -pc|--pluginconfig)
         log "$timeStamp Plugin configs backup started."
-        pluginconfigOnly=true
+        pluginConfigOnly=true
         ;;
       *)
       log -e "$timeStamp Error: Invalid argument! (${1}) Backup has been cancelled.\n"
-      exit 1
+      exit 2
       ;;
     esac
     shift
@@ -90,12 +90,12 @@ done
 # Logs error and cancels script if serverDir isn't found
 if [ ! -d $serverDir ]; then
     log "$timeStamp Error: Server folder not found! Backup has been cancelled. ($serverDir doesnt exist)\n"
-    exit 1
+    exit 3
 fi
 # Logs error and cancels script if backupDir isn't found
 if [ ! -d $backupDir ]; then
     log "$timeStamp Error: Backup folder not found! Backup has been cancelled. ($backupDir doesnt exist)\n"
-    exit 1
+    exit 3
 fi
 # Logs error if java process (server) isn't running but will continue anyways
 if ! ps -e | grep -q "java"; then
@@ -120,21 +120,21 @@ if $restartOnly; then
     :
 elif $worldsOnly; then
     # Starts the tar with files from the void (/dev/null is a symlink to a non-existent dir) so that multiple files can be looped in from array then gziped
-    tar cf $backupDir/$timeStamp-WorldsBackup.tar --files-from /dev/null 
+    tar cf "$backupDir/$timeStamp-WorldsBackup.tar" --files-from /dev/null 
     for item in "${serverWorlds[@]}"
     do
-        tar rf $backupDir/$timeStamp-WorldsBackup.tar "$serverDir/$item" &> /dev/null # Mutes tar output
+        tar rf "$backupDir/$timeStamp-WorldsBackup.tar" "$serverDir/$item" &> /dev/null # Mutes tar output
     done
-    gzip $backupDir/$timeStamp-WorldsBackup.tar
+    gzip "$backupDir/$timeStamp-WorldsBackup.tar"
     log "$timeStamp Created world backup."
 elif $pluginOnly; then
-    tar -czPf $backupDir/$timeStamp-PluginsBackup.tar.gz $serverDir/plugins
+    tar -czPf "$backupDir/$timeStamp-PluginsBackup.tar.gz" $serverDir/plugins
     log "$timeStamp Created plugins backup."
-elif $pluginconfigOnly; then
-    tar -czPf $backupDir/$timeStamp-PluginConfigsBackup.tar.gz --exclude='*.jar' $serverDir/plugins
+elif $pluginConfigOnly; then
+    tar -czPf "$backupDir/$timeStamp-PluginConfigsBackup.tar.gz" --exclude='*.jar' $serverDir/plugins
     log "$timeStamp Created plugin configs backup."
 else
-    tar -czPf $backupDir/$timeStamp-FullBackup.tar.gz $serverDir
+    tar -czPf "$backupDir/$timeStamp-FullBackup.tar.gz" $serverDir
     log "$timeStamp Created full backup."
 fi
  
