@@ -11,7 +11,7 @@ gracePeriod="1m"
 serverWorlds=("world" "world_nether" "world_the_end")
 # Don't change anything past this line unless you know what you're doing.
 
-timeStamp=$(date +"[%Y-%m-%d %H:%M:%S]")
+timeStamp=$(date +"[%Y-%m-%d %H:%M]")
 screens=$(screen -ls | grep -c "$USER")
 serverRunning=true
 worldsOnly=false
@@ -64,7 +64,6 @@ do
         ;;
       -w|--worlds)
         log "$timeStamp Worlds backup started."
-        worldfolderCheck
         worldsOnly=true
         ;;
       -p|--plugin)
@@ -119,6 +118,7 @@ fi
 if $restartOnly; then
     :
 elif $worldsOnly; then
+	worldfolderCheck
     # Starts the tar with files from the void (/dev/null is a symlink to a non-existent dir) so that multiple files can be looped in from array then gziped
     tar cf "$backupDir/$timeStamp-WorldsBackup.tar" --files-from /dev/null 
     for item in "${serverWorlds[@]}"
@@ -128,13 +128,13 @@ elif $worldsOnly; then
     gzip "$backupDir/$timeStamp-WorldsBackup.tar"
     log "$timeStamp Created world backup."
 elif $pluginOnly; then
-    tar -czPf "$backupDir/$timeStamp-PluginsBackup.tar.gz" $serverDir/plugins
+    tar -czPf "$backupDir/$timeStamp-PluginsBackup.tar.gz" "$serverDir/plugins"
     log "$timeStamp Created plugins backup."
 elif $pluginConfigOnly; then
-    tar -czPf "$backupDir/$timeStamp-PluginConfigsBackup.tar.gz" --exclude='*.jar' $serverDir/plugins
+    tar -czPf "$backupDir/$timeStamp-PluginConfigsBackup.tar.gz" --exclude='*.jar' "$serverDir/plugins"
     log "$timeStamp Created plugin configs backup."
 else
-    tar -czPf "$backupDir/$timeStamp-FullBackup.tar.gz" $serverDir
+    tar -czPf "$backupDir/$timeStamp-FullBackup.tar.gz" "$serverDir"
     log "$timeStamp Created full backup."
 fi
  
