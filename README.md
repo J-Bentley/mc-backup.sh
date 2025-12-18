@@ -32,9 +32,9 @@ screen -p 0 -X stuff 'java -Xms<RAM>G -Xmx<RAM>G -jar paper*\n'
 ## Usage  
 ``bash mc-backup.sh [-h , -r , -w , -p, -pc] ``
 
-- **No args:** Gracefully stops the server if its running, compresses entire server directory to backup location and restarts server.  
+- **No args:** Shows modes available.
 
-- **-h | --help:** Shows modes available.   
+- **-f | --fullbackup:** Gracefully stops the server, compresses entires server directory and restarts server.     
 
 - **-r | --restart:** Saves & restarts server with no backup made.  
 
